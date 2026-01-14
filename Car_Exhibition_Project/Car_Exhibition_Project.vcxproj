@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{14050bf3-d30b-420a-ba7b-7e1188362f85}</ProjectGuid>
+    <RootNamespace>CarExhibitionProject</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;dsound.lib;winmm.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="3DTexture.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="Car_Exhibition_Project.h" />
+    <ClInclude Include="CornerArea.h" />
+    <ClInclude Include="CurbConnector.h" />
+    <ClInclude Include="ExternalEnvironment.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="FrontArea.h" />
+    <ClInclude Include="Model_3DS.h" />
+    <ClInclude Include="OutdoorArea.h" />
+    <ClInclude Include="RedPortal.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Showroom.h" />
+    <ClInclude Include="ShowroomManager.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="Wall.h" />
+    <ClInclude Include="Wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3DTexture.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Car_Exhibition_Project.cpp" />
+    <ClCompile Include="CornerArea.cpp" />
+    <ClCompile Include="CurbConnector.cpp" />
+    <ClCompile Include="FrontArea.cpp" />
+    <ClCompile Include="Model_3DS.cpp" />
+    <ClCompile Include="OutdoorArea.cpp" />
+    <ClCompile Include="Showroom.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Wave.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Car_Exhibition_Project.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="back.bmp" />
+    <Image Include="bark_loo.bmp" />
+    <Image Include="blatt1.bmp" />
+    <Image Include="blatt1_a.bmp" />
+    <Image Include="bottom.bmp" />
+    <Image Include="building.bmp" />
+    <Image Include="building1.bmp" />
+    <Image Include="building2.bmp" />
+    <Image Include="building3.bmp" />
+    <Image Include="buildingFront.bmp" />
+    <Image Include="ca1111.bmp" />
+    <Image Include="Car_Exhibition_Project.ico" />
+    <Image Include="door1.bmp" />
+    <Image Include="flag.bmp" />
+    <Image Include="flo1.bmp" />
+    <Image Include="floor1.bmp" />
+    <Image Include="floor2.bmp" />
+    <Image Include="front.bmp" />
+    <Image Include="frontOut.bmp" />
+    <Image Include="gress.bmp" />
+    <Image Include="left.bmp" />
+    <Image Include="mpm_vol.09_p22_ground_bump.bmp" />
+    <Image Include="mpm_vol.09_p22_ground_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_1_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_2_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_3_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_4_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_back_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_bump.bmp" />
+    <Image Include="mpm_vol.09_p22_leaf_refl.bmp" />
+    <Image Include="mpm_vol.09_p22_metal_diff.bmp" />
+    <Image Include="mpm_vol.09_p22_metal_refl.bmp" />
+    <Image Include="mpm_vol.09_p22_stem_diff.bmp" />
+    <Image Include="night_front.bmp" />
+    <Image Include="night_bottom.bmp" />
+    <Image Include="night_back.bmp" />
+    <Image Include="night_right.bmp" />
+    <Image Include="night_left.bmp" />
+    <Image Include="night_top.bmp" />
+    <Image Include="right.bmp" />
+    <Image Include="road1.bmp" />
+    <Image Include="road2.bmp" />
+    <Image Include="road3.bmp" />
+    <Image Include="road4.bmp" />
+    <Image Include="small.ico" />
+    <Image Include="top.bmp" />
+    <Image Include="wall.bmp" />
+    <Image Include="wallBlock.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plant 3.3ds" />
+    <None Include="Tree1.3ds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound.wav" />
+    <Media Include="sound2.wav" />
+    <Media Include="sound3.wav" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Car_Exhibition_Project.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RedPortal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Showroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OutdoorArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrontArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CornerArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CurbConnector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3DTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternalEnvironment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowroomManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model_3DS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Car_Exhibition_Project.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Showroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OutdoorArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CornerArea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurbConnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="3DTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Model_3DS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Car_Exhibition_Project.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Car_Exhibition_Project.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="flo1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="floor1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="road1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="door1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="bottom.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="front.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="left.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="right.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="top.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="back.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="gress.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="building1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="building2.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="building3.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="road2.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="road3.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="road4.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="flag.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="bark_loo.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="blatt1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="blatt1_a.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="floor2.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="building.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="buildingFront.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="wall.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="frontOut.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="wallBlock.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_ground_bump.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_ground_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_1_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_2_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_3_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_4_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_back_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_bump.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_leaf_refl.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_metal_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_metal_refl.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="mpm_vol.09_p22_stem_diff.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="ca1111.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_front.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_right.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_top.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_back.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_left.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="night_bottom.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tree1.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Plant 3.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound.wav">
+      <Filter>Source Files</Filter>
+    </Media>
+    <Media Include="sound2.wav">
+      <Filter>Source Files</Filter>
+    </Media>
+    <Media Include="sound3.wav">
+      <Filter>Source Files</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
