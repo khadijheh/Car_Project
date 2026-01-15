@@ -32,7 +32,7 @@ roadTex2, skyboxTex[6],  skyboxNightTex[6],
 buildingTexArray1[6], 
 buildingTexArray2[6],
 buildingTexArray3[6], roadTexArray[6], roadTex2Array[6], grassTexArray[6], buildingTexArray4[6];
-float showroomWidth = 400.0f, showroomHeight = 60.0f, showroomDepth = 200.0f, glassZPos = showroomDepth / 2.0f, personDoorOpenAngle = 0.0f;
+float showroomWidth = 400.0f, showroomHeight = 70.0f, showroomDepth = 200.0f, glassZPos = showroomDepth / 2.0f, personDoorOpenAngle = 0.0f;
 Model_3DS treeModel,plantModel;
 ExternalEnvironment myEnv;
 void InitScene();
@@ -80,7 +80,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
     }
     return (int)msg.wParam;
 }
-Showroom myShowroom(400.0f, 60.0f, 200.0f);
+Showroom myShowroom(showroomWidth, showroomHeight, showroomDepth);
 
 bool LoadSkybox(GLuint texArray[6], const char* faces[6]) {
     for (int i = 0; i < 6; i++) {
@@ -282,7 +282,7 @@ bool isLocationSafe(float x, float z) {
 void DrawVegetation() {
     float treeX[] = { 350.0f, 390.0f, 430.0f };
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(treeX[i], 0.0f, 220.0f);
         glScalef(5.0f, 5.0f, 5.0f);
@@ -294,7 +294,7 @@ void DrawVegetation() {
 
     for (int i = 0; i < 2; i++) {
         glPushMatrix();
-        glTranslatef(plantX[i], 15.0f, 130.0f);
+        glTranslatef(plantX[i], 12.0f, 130.0f);
         glScalef(2.0f, 2.0f, 2.0f);
         glColor3f(0.82f, 0.78f, 0.60f);
 

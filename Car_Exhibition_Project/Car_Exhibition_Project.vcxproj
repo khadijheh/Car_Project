@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="ShowCar1.h" />
     <ClInclude Include="Car_Exhibition_Project.h" />
     <ClInclude Include="CornerArea.h" />
     <ClInclude Include="CurbConnector.h" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="ShowCar1.cpp" />
     <ClCompile Include="Car_Exhibition_Project.cpp" />
     <ClCompile Include="CornerArea.cpp" />
     <ClCompile Include="CurbConnector.cpp" />
@@ -177,6 +179,7 @@
     <Image Include="building3.bmp" />
     <Image Include="buildingFront.bmp" />
     <Image Include="ca1111.bmp" />
+    <Image Include="carwheel.bmp" />
     <Image Include="Car_Exhibition_Project.ico" />
     <Image Include="door1.bmp" />
     <Image Include="flag.bmp" />
@@ -186,6 +189,7 @@
     <Image Include="front.bmp" />
     <Image Include="frontOut.bmp" />
     <Image Include="gress.bmp" />
+    <Image Include="KS2.bmp" />
     <Image Include="left.bmp" />
     <Image Include="mpm_vol.09_p22_ground_bump.bmp" />
     <Image Include="mpm_vol.09_p22_ground_diff.bmp" />
@@ -205,17 +209,23 @@
     <Image Include="night_right.bmp" />
     <Image Include="night_left.bmp" />
     <Image Include="night_top.bmp" />
+    <Image Include="OIP.bmp" />
+    <Image Include="red.bmp" />
     <Image Include="right.bmp" />
+    <Image Include="rim.bmp" />
     <Image Include="road1.bmp" />
     <Image Include="road2.bmp" />
     <Image Include="road3.bmp" />
     <Image Include="road4.bmp" />
+    <Image Include="rrr.bmp" />
     <Image Include="small.ico" />
+    <Image Include="t1.bmp" />
     <Image Include="top.bmp" />
     <Image Include="wall.bmp" />
     <Image Include="wallBlock.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="A032.3DS" />
     <None Include="Car.3ds" />
     <None Include="Plant 3.3ds" />
     <None Include="Tree1.3ds" />

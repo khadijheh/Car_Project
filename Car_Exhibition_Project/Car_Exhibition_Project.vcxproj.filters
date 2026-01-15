@@ -75,6 +75,9 @@
     <ClInclude Include="Model_3DS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShowCar1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Car_Exhibition_Project.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Wave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShowCar1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -270,6 +276,27 @@
     <Image Include="night_bottom.bmp">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="carwheel.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="KS2.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="OIP.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="red.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="rim.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="rrr.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="t1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tree1.3ds">
@@ -279,6 +306,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="Car.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="A032.3DS">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
