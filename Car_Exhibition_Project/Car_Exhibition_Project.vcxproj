@@ -216,6 +216,7 @@
     <Image Include="wallBlock.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Car.3ds" />
     <None Include="Plant 3.3ds" />
     <None Include="Tree1.3ds" />
   </ItemGroup>

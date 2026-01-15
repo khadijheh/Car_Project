@@ -292,13 +292,19 @@ void DrawVegetation() {
 
     float plantX[] = { -150.0f, -210.0f };
 
-   /* for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         glPushMatrix();
         glTranslatef(plantX[i], 15.0f, 130.0f);
         glScalef(2.0f, 2.0f, 2.0f);
+        glColor3f(0.82f, 0.78f, 0.60f);
+
+
+        glDisable(GL_LIGHTING);
         plantModel.Draw();
+        glEnable(GL_LIGHTING);
+      
         glPopMatrix();
-    }*/
+    }
 }
 
 void InitScene() {
@@ -356,7 +362,7 @@ void InitScene() {
     LoadSkybox(skyboxTex, faces);
     LoadSkybox(skyboxNightTex, nightFaces);
     treeModel.Load((char*)"Tree1.3ds");
-    //plantModel.Load((char*)"Plant 3.3ds");
+    plantModel.Load((char*)"Plant 3.3ds");
    
     glDisable(GL_TEXTURE_2D);
    

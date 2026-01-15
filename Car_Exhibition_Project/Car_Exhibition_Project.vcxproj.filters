@@ -278,6 +278,9 @@
     <None Include="Plant 3.3ds">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Car.3ds">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound.wav">
