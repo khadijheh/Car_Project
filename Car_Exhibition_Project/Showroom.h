@@ -30,7 +30,6 @@ private:
   
 
 public:
-    float personDoorOpenAngle;
     int asphaltTexture;
     int floorTex;
     int  wallTex;
