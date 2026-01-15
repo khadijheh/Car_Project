@@ -75,7 +75,7 @@
     <ClInclude Include="Model_3DS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShowCar1.h">
+    <ClInclude Include="Cybertruck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -122,7 +122,7 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShowCar1.cpp">
+    <ClCompile Include="Cybertruck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

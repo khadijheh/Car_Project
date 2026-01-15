@@ -14,6 +14,7 @@
 #include "Model_3DS.h"
 #include "ExternalEnvironment.h"
 #include "Sound.h"
+#include "Cybertruck.h"
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
@@ -35,6 +36,7 @@ buildingTexArray3[6], roadTexArray[6], roadTex2Array[6], grassTexArray[6], build
 float showroomWidth = 400.0f, showroomHeight = 70.0f, showroomDepth = 200.0f, glassZPos = showroomDepth / 2.0f, personDoorOpenAngle = 0.0f;
 Model_3DS treeModel,plantModel;
 ExternalEnvironment myEnv;
+Cybertruck myCyber;
 void InitScene();
 void RenderScene();
 
@@ -437,6 +439,12 @@ void RenderScene() {
     myShowroom.render();
     myEnv.render();
     DrawVegetation();
+    glPushMatrix();
+    
+    glTranslatef(0.0f, 10.0f, 150.0f);
+    glScalef(10.0f, 10.0f, 10.0f);
+    myCyber.render(); 
+    glPopMatrix();
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glColor3f(1.0f, 1.0f, 1.0f);

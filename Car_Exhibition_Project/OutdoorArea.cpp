@@ -41,7 +41,7 @@ void OutdoorArea::draw(Showroom* s, bool isNight) {
     drawCurb(s);
 
     drawParkingLines(s);
-
+    drawParkedCars(s);
    
     drawLamps(s, isNight);
 
@@ -175,5 +175,33 @@ void OutdoorArea::drawSecurityBollards(Showroom* s) {
 
         s->drawBox(i, 0, zFront, 0.8f, 3.5f, 0.8f, 0.9f, 0.9f, 0.9f, 1.0f);
         s->drawBox(i, 2.5f, zFront, 0.9f, 0.5f, 0.9f, 0.8f, 0.0f, 0.0f, 1.0f);
+    }
+}
+void OutdoorArea::drawParkedCars(Showroom* s) {
+    float colors[3][3] = {
+        {0.67f, 0.67f, 0.67f},
+        {0.10f, 0.10f, 0.10f}, 
+        {0.85f, 0.85f, 0.85f}  
+    };
+
+    float spacing = 30.0f;
+    int colorIdx = 0;
+
+    for (float j = -depth / 2.0f + 45.0f; j <= depth / 2.0f - 45.0f; j += spacing) {
+        glPushMatrix();
+
+        float rightX = (width / 2.0f) - 25.0f;
+        glTranslatef(rightX, 3.5, j);
+
+       
+        glRotatef(182.0f, 0.0f, 1.0f, 0.0f);
+
+        glScalef(6.0f, 6.0f, 6.0f);
+
+        glColor3fv(colors[colorIdx % 3]);
+        carModel.render();
+        glPopMatrix();
+
+        colorIdx++;
     }
 }

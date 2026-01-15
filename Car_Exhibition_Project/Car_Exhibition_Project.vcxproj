@@ -127,10 +127,10 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="ShowCar1.h" />
     <ClInclude Include="Car_Exhibition_Project.h" />
     <ClInclude Include="CornerArea.h" />
     <ClInclude Include="CurbConnector.h" />
+    <ClInclude Include="Cybertruck.h" />
     <ClInclude Include="ExternalEnvironment.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="FrontArea.h" />
@@ -150,10 +150,10 @@
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="ShowCar1.cpp" />
     <ClCompile Include="Car_Exhibition_Project.cpp" />
     <ClCompile Include="CornerArea.cpp" />
     <ClCompile Include="CurbConnector.cpp" />
+    <ClCompile Include="Cybertruck.cpp" />
     <ClCompile Include="FrontArea.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
     <ClCompile Include="OutdoorArea.cpp" />
