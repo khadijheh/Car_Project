@@ -31,6 +31,8 @@ private:
   
 
 public:
+    float doorPos;    
+    float doorAlpha;
    void  setupShowcaseLighting(float x, float h, float z);
     void drawCarShowcase(Cybertruck& car, float x, float z);
     void renderAdvancedGlass(float x, float z, float w, float d, float h);
@@ -46,6 +48,7 @@ public:
     float portalAngle;
     float carDoorAngle;    
     bool isCarDoorOpening;  
+    bool isCarDoorroom1;  
     void drawBox(float x, float y, float z, float w, float h, float d, float r, float g, float b, float a = 1.0f);
     Showroom(float w = 400.0f, float h = 60.0f, float d = 200.0f);
 

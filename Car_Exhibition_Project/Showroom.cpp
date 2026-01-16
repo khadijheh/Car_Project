@@ -274,6 +274,7 @@ void Showroom::drawBackBeam() {
 }
 
 void Showroom::update(float camX, float camZ) {
+    // 1. منطق باب الأشخاص (فتح بالدوران بناءً على المسافة)
     float doorPosX = -width / 2.0f;
     float doorPosZ = (depth / 2.0f) - 15.0f;
     float distToPerson = sqrt(pow(camX - doorPosX, 2) + pow(camZ - doorPosZ, 2));
@@ -284,14 +285,38 @@ void Showroom::update(float camX, float camZ) {
     else {
         if (personDoorOpenAngle > 0.0f) personDoorOpenAngle -= 2.0f;
     }
-    float maxLift = 18.5f; 
+
+    // 2. منطق باب السيارة الجانبي (رفع رأسي - Lift)
+    float maxLift = 18.5f;
     if (isCarDoorOpening) {
-        if (carDoorAngle < maxLift) carDoorAngle += 0.2f; 
+        if (carDoorAngle < maxLift) carDoorAngle += 0.2f;
     }
     else {
-        if (carDoorAngle > 0.0f) carDoorAngle -= 0.2f;  
+        if (carDoorAngle > 0.0f) carDoorAngle -= 0.2f;
     }
-    
+
+    // 3. منطق الباب الزجاجي المتقدم (الإزاحة + التلاشي التدريجي)
+    // ملاحظة: maxGlassMove هي المسافة التي يتحركها قبل أن يختفي تماماً
+    float maxGlassMove = 15.0f;
+    float glassMoveSpeed = 0.4f;
+    float glassFadeSpeed = 0.02f;
+
+    if (isCarDoorroom1) {
+        // تحريك لليسا وتلاشي
+        if (this->doorPos < maxGlassMove) this->doorPos += glassMoveSpeed;
+        if (this->doorAlpha > 0.0f) this->doorAlpha -= glassFadeSpeed;
+    }
+    else {
+        // عودة للمكان وظهور
+        if (this->doorPos > 0.0f) this->doorPos -= glassMoveSpeed;
+        if (this->doorAlpha < 1.0f) this->doorAlpha += glassFadeSpeed;
+    }
+
+    // تصحيح حدود الشفافية لضمان عدم حدوث وميض (Flickering)
+    if (this->doorAlpha < 0.0f) this->doorAlpha = 0.0f;
+    if (this->doorAlpha > 1.0f) this->doorAlpha = 1.0f;
+
+    // 4. منطق بوابة الـ Portal الحمراء
     float distToPortal = sqrt(pow(camX - 0.0f, 2) + pow(camZ - (glassZPos + 1.5f), 2));
     if (distToPortal < 50.0f) {
         if (portalAngle < 90.0f) portalAngle += 2.0f;
@@ -300,7 +325,6 @@ void Showroom::update(float camX, float camZ) {
         if (portalAngle > 0.0f) portalAngle -= 2.0f;
     }
 }
-
 void Showroom::render(Cybertruck& car) {
     glEnable(GL_LIGHTING);
 
@@ -591,7 +615,7 @@ void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) 
 
     float maxMove = w * 0.20f;
 
-    if (isCarDoorOpening) {
+    if (isCarDoorroom1) {
         if (doorPos < maxMove) doorPos += 0.4f; 
         if (doorAlpha > 0.0f) doorAlpha -= 0.02f; 
     }

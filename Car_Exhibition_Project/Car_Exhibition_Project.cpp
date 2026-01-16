@@ -496,6 +496,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             myShowroom.isCarDoorOpening = !myShowroom.isCarDoorOpening;
 
         }
+        if (wParam == 'R') {
+            myShowroom.isCarDoorroom1 = !myShowroom.isCarDoorroom1;
+
+        }
         if (wParam == 'M') {
             if (MySound.IsPlaying()) {
                 MySound.Stop();
