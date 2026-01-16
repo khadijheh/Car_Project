@@ -551,7 +551,6 @@ void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glDepthMask(GL_TRUE);
-
     glColor3f(0.1f, 0.1f, 0.1f);
     float cols[4][2] = { {x - w / 2, z - d / 2}, {x + w / 2, z - d / 2}, {x - w / 2, z + d / 2}, {x + w / 2, z + d / 2} };
 
@@ -575,37 +574,51 @@ void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) 
         drawBox(x + w / 2, h * level, z, 0.8f, 0.8f, d, 0.1f, 0.1f, 0.1f, 1.0f);
     }
 
-
-    glDepthMask(GL_FALSE); 
+    glDepthMask(GL_FALSE);
 
     float rG = 0.6f, gG = 0.8f, bG = 1.0f, aG = 0.15f;
-    drawBox(x, 0, z - d / 2, w, h, 0.1f, rG, gG, bG, aG);      
-    drawBox(x - w / 2, 0, z, 0.1f, h, d, rG, gG, bG, 0.08f);  
-    drawBox(x + w / 2, 0, z, 0.1f, h, d, rG, gG, bG, aG);      
+    drawBox(x, 0, z - d / 2, w, h, 0.1f, rG, gG, bG, aG);
+    drawBox(x - w / 2, 0, z, 0.1f, h, d, rG, gG, bG, 0.08f);
+    drawBox(x + w / 2, 0, z, 0.1f, h, d, rG, gG, bG, aG);
 
     glPushMatrix();
     glTranslatef(x, h + 0.2f, z);
     drawBox(0, 0, 0, w - 2.0f, 0.1f, d - 2.0f, rG, gG, bG, 0.3f);
     glPopMatrix();
 
-    static float doorPos = 0.0f;
-    if (isCarDoorOpening) { if (doorPos < w * 0.75f) doorPos += 0.8f; }
-    else { if (doorPos > 0.0f) doorPos -= 0.8f; }
+    static float doorPos = 0.0f;   
+    static float doorAlpha = 1.0f; 
 
-    glPushMatrix();
-    glTranslatef(x - doorPos, 0, z + d / 2);
-    drawBox(0, h / 2, 0, w, h, 0.8f, 0.2f, 0.2f, 0.2f, 1.0f);     
-    drawBox(0, 0, 0, w - 1.0f, h, 0.2f, 1.0f, 1.0f, 1.0f, 0.25f); 
+    float maxMove = w * 0.20f;
 
-    glDepthMask(GL_TRUE);
-    glColor3f(0.8f, 0.8f, 0.8f);
-    glPushMatrix();
-    glTranslatef(w / 2 - 2.0f, h / 2, 1.0f);
-    glScalef(0.5f, 8.0f, 0.5f);
-    glutSolidCube(1.0);
-    glPopMatrix();
-    glDepthMask(GL_FALSE);
-    glPopMatrix();
+    if (isCarDoorOpening) {
+        if (doorPos < maxMove) doorPos += 0.4f; 
+        if (doorAlpha > 0.0f) doorAlpha -= 0.02f; 
+    }
+    else {
+        if (doorPos > 0.0f) doorPos -= 0.4f;
+        if (doorAlpha < 1.0f) doorAlpha += 0.02f;
+    }
+
+    if (doorAlpha > 0.01f) {
+        glPushMatrix();
+        glTranslatef(x - doorPos, 0, z + d / 2);
+
+        drawBox(0, h / 2, 0, w, h, 0.8f, 0.2f, 0.2f, 0.2f, doorAlpha);
+        drawBox(0, 0, 0, w - 1.0f, h, 0.2f, 1.0f, 1.0f, 1.0f, 0.25f * doorAlpha);
+
+        glDepthMask(GL_TRUE);
+        glColor4f(0.8f, 0.8f, 0.8f, doorAlpha);
+        glPushMatrix();
+        glTranslatef(w / 2 - 2.0f, h / 2, 1.0f);
+        glScalef(0.5f, 8.0f, 0.5f);
+        glutSolidCube(1.0);
+        glPopMatrix();
+        glDepthMask(GL_FALSE);
+
+        glPopMatrix();
+    }
+
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 }
