@@ -78,6 +78,9 @@
     <ClInclude Include="Cybertruck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CarModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Car_Exhibition_Project.cpp">

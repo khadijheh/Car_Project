@@ -31,7 +31,7 @@ bool isClicked = false,isNight = false;
 GLuint buildingTex,
 roadTex, grassTex,
 roadTex2, skyboxTex[6],  skyboxNightTex[6],
-buildingTexArray1[6], 
+buildingTexArray1[6],
 buildingTexArray2[6],
 buildingTexArray3[6], roadTexArray[6], roadTex2Array[6], grassTexArray[6], buildingTexArray4[6];
 float showroomWidth = 400.0f, showroomHeight = 70.0f, showroomDepth = 200.0f, glassZPos = showroomDepth / 2.0f, personDoorOpenAngle = 0.0f;
@@ -275,7 +275,7 @@ bool isLocationSafe(float x, float z) {
 
     // --- د. فحص المباني الخارجية (البيئة المحيطة) ---
 
-    
+
 
     return true; // إذا مر من كل الفحوصات، الموقع آمن
 }
@@ -305,7 +305,7 @@ void DrawVegetation() {
         glDisable(GL_LIGHTING);
         plantModel.Draw();
         glEnable(GL_LIGHTING);
-      
+
         glPopMatrix();
     }
 }
@@ -314,14 +314,14 @@ void InitScene() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-   
+
     glEnable(GL_TEXTURE_2D);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glShadeModel(GL_SMOOTH);
-   
+
     glEnable(GL_NORMALIZE);
 
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -377,10 +377,10 @@ void InitScene() {
 }
 
 void ApplyLighting() {
-    glEnable(GL_LIGHTING); 
+    glEnable(GL_LIGHTING);
 
     if (!isNight) {
-        GLfloat light_pos[] = { 1.0f, 1.0f, 1.0f, 0.0f }; 
+        GLfloat light_pos[] = { 1.0f, 1.0f, 1.0f, 0.0f };
         GLfloat ambient[] = { 0.4f, 0.4f, 0.4f, 1.0f };
         GLfloat diffuse[] = { 1.0f, 1.0f, 0.9f, 1.0f };
         GLfloat specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -404,8 +404,8 @@ void ApplyLighting() {
         glLightfv(GL_LIGHT0, GL_DIFFUSE, moon_diffuse);
 
         glEnable(GL_LIGHT1);
-        GLfloat lamp_pos[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 
-        GLfloat lamp_color[] = { 1.0f, 0.9f, 0.7f, 1.0f }; 
+        GLfloat lamp_pos[] = { 0.0f, 50.0f, 0.0f, 1.0f };
+        GLfloat lamp_color[] = { 1.0f, 0.9f, 0.7f, 1.0f };
         glLightfv(GL_LIGHT1, GL_POSITION, lamp_pos);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, lamp_color);
 
@@ -413,7 +413,7 @@ void ApplyLighting() {
         glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.005f);
         glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.0001f);
 
-        glClearColor(0.01f, 0.01f, 0.05f, 1.0f); 
+        glClearColor(0.01f, 0.01f, 0.05f, 1.0f);
     }
 }
 
@@ -435,28 +435,23 @@ void RenderScene() {
     Draw_Skybox(5.0f, 5.0f, 5.0f);
 
     ApplyLighting();
+    myEnv.render();
     myShowroom.setNightMode(isNight);
     myShowroom.update(camX, camZ);
-    myShowroom.render();
-    myEnv.render();
+    myShowroom.render(myCyber);
+ 
     DrawVegetation();
-    glPushMatrix();
-    
-    glTranslatef(0.0f, 10.0f, 150.0f);
-    glScalef(10.0f, 10.0f, 10.0f);
-    myCyber.render(); 
-    glPopMatrix();
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glColor3f(1.0f, 1.0f, 1.0f);
-  
+
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     float speed = 6.5f;
     switch (message) {
     case WM_KEYDOWN:
-    { 
+    {
         float nextX = camX;
         float nextZ = camZ;
 
@@ -464,7 +459,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             nextX += sin(camAngleY * 3.14 / 180) * speed;
             nextZ -= cos(camAngleY * 3.14 / 180) * speed;
         }
-        else if (wParam == 'S') { 
+        else if (wParam == 'S') {
             nextX -= sin(camAngleY * 3.14 / 180) * speed;
             nextZ += cos(camAngleY * 3.14 / 180) * speed;
         }
@@ -477,7 +472,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             nextZ += sin(camAngleY * 3.14 / 180) * speed;
         }
 
-      
+
         if (isLocationSafe(nextX, nextZ)) {
             camX = nextX;
             camZ = nextZ;
@@ -488,7 +483,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             }
         }
         if (wParam == 'E') {
-      
+
             if (camY > 5.0f) {
                 camY -= speed;
             }
@@ -499,30 +494,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
         if (wParam == 'C') {
             myShowroom.isCarDoorOpening = !myShowroom.isCarDoorOpening;
-            
+
         }
         if (wParam == 'M') {
             if (MySound.IsPlaying()) {
                 MySound.Stop();
             }
             else {
-                MySound.Play(true); 
+                MySound.Play(true);
             }
         }
 
         InvalidateRect(hWnd, NULL, FALSE);
-    } 
+    }
     break;
     case WM_LBUTTONDOWN:
         prevMouseX = LOWORD(lParam);
         prevMouseY = HIWORD(lParam);
         isClicked = true;
         break;
-    case VK_ADD: 
+    case VK_ADD:
         showroomWidth += 10.0f;
         showroomDepth += 10.0f;
         break;
-    case VK_SUBTRACT: 
+    case VK_SUBTRACT:
         showroomWidth -= 10.0f;
         showroomDepth -= 10.0f;
         break;

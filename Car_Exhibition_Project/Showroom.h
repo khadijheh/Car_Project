@@ -8,6 +8,7 @@
 #include <cmath>
 #include "Wall.h"
 #include "RedPortal.h"
+#include "Cybertruck.h"
 
 class Showroom {
 private:
@@ -30,6 +31,9 @@ private:
   
 
 public:
+   void  setupShowcaseLighting(float x, float h, float z);
+    void drawCarShowcase(Cybertruck& car, float x, float z);
+    void renderAdvancedGlass(float x, float z, float w, float d, float h);
     float personDoorOpenAngle;
     int asphaltTexture;
     int floorTex;
@@ -46,7 +50,7 @@ public:
     Showroom(float w = 400.0f, float h = 60.0f, float d = 200.0f);
 
     void update(float camX, float camZ); 
-    void render();                      
+    void render(Cybertruck& car);
     void setNightMode(bool night) { isNightMode = night; }
 
     

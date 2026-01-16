@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="CarModel.h" />
     <ClInclude Include="Car_Exhibition_Project.h" />
     <ClInclude Include="CornerArea.h" />
     <ClInclude Include="CurbConnector.h" />

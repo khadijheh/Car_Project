@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////
 //
 // OpenGL Texture Class
 // by: Matthew Fairfax
@@ -89,41 +89,50 @@ void GLTexture::Use()
 	glBindTexture(GL_TEXTURE_2D, texture[0]);				// Bind the texture as the current one
 }
 
-void GLTexture::LoadBMP(char *name)
+void GLTexture::LoadBMP(char* name)
 {
-	// Create a place to store the texture
-	AUX_RGBImageRec *TextureImage[1];
+	// 1. تعريف مكان لتخزين الصورة
+	AUX_RGBImageRec* TextureImage[1];
+	memset(TextureImage, 0, sizeof(void*) * 1);
 
-	// Set the pointer to NULL
-	memset(TextureImage,0,sizeof(void *)*1);
+	// 2. محاولة تحميل الصورة
+	TextureImage[0] = auxDIBImageLoadA(name); // استخدم auxDIBImageLoadA للتعامل مع النصوص بشكل أدق
 
-	// Load the bitmap and assign our pointer to it
-	TextureImage[0] = auxDIBImageLoad(name);
-
-	// Just in case we want to use the width and height later
-	width = TextureImage[0]->sizeX;
-	height = TextureImage[0]->sizeY;
-
-	// Generate the OpenGL texture id
-	glGenTextures(1, &texture[0]);
-
-	// Bind this texture to its id
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-	// Use mipmapping filter
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-
-	// Generate the mipmaps
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, TextureImage[0]->sizeX, TextureImage[0]->sizeY, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-
-	// Cleanup
-	if (TextureImage[0])
+	// 3. فحص الأمان: هل نجح التحميل؟
+	if (TextureImage[0] != NULL && TextureImage[0]->data != NULL)
 	{
+		// إذا نجح التحميل، قم بتعيين الأبعاد
+		width = TextureImage[0]->sizeX;
+		height = TextureImage[0]->sizeY;
+
+		// توليد معرف التكتشر
+		glGenTextures(1, &texture[0]);
+
+		// ربط التكتشر
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+		// إعدادات الفلترة
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// إنشاء الميب ماب (Mipmaps)
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
+
+		// تنظيف الذاكرة المستخدمة للتحميل فقط (لأن البيانات أصبحت في كارت الشاشة الآن)
 		if (TextureImage[0]->data)
 			free(TextureImage[0]->data);
-
 		free(TextureImage[0]);
+	}
+	else
+	{
+		// في حال فشل التحميل، لا تلمس الكود بل اطبع رسالة خطأ فقط
+		char errorMsg[256];
+		sprintf(errorMsg, "Could not find or load texture: %s\nMake sure it is 24-bit BMP.", name);
+		MessageBoxA(NULL, errorMsg, "Texture Error", MB_OK | MB_ICONERROR);
+
+		// تعيين قيم افتراضية لمنع المشاكل لاحقاً
+		width = 0;
+		height = 0;
 	}
 }
 

@@ -4,7 +4,7 @@
 #include "FrontArea.h"
 #include "CornerArea.h"
 #include "CurbConnector.h"
-
+extern Cybertruck myCyber;
 Showroom::Showroom(float w, float h, float d) {
     width = w;
     height = h;
@@ -34,7 +34,7 @@ void Showroom::drawBox(float x, float y, float z, float w, float h, float d, flo
 void Showroom::drawPlatform(float x, float z, float r, float g, float b) {
     glPushMatrix();
     glTranslatef(x, 0.1f, z);
-    drawBox(0, 0, 0, 20, 0.5f, 20, 0.1f, 0.1f, 0.1f);
+    drawBox(0, 0, 0, 40, 0.5f, 40, 0.1f, 0.1f, 0.1f);
     if (isNightMode) drawBox(0, 0.5f, 0, 18, 0.1f, 18, r, g, b, 1.0f);
     else drawBox(0, 0.5f, 0, 18, 0.1f, 18, r, g, b, 0.4f);
     glPopMatrix();
@@ -301,7 +301,7 @@ void Showroom::update(float camX, float camZ) {
     }
 }
 
-void Showroom::render() {
+void Showroom::render(Cybertruck& car) {
     glEnable(GL_LIGHTING);
 
     if (isNightMode) {
@@ -355,7 +355,7 @@ void Showroom::render() {
     FrontArea front(0, 0, glassZPos, width, frontDepth);
     front.draw(this, isNightMode);
 
-    drawPlatform(-width * 0.25f, -depth * 0.25f, 1, 0, 0);
+   
     drawPlatform(width * 0.25f, -depth * 0.25f, 0, 0, 1);
     drawPlatform(-width * 0.25f, depth * 0.25f, 0, 1, 0);
     drawPlatform(width * 0.25f, depth * 0.25f, 1, 1, 0.5f);
@@ -366,9 +366,9 @@ void Showroom::render() {
 
     Wall backWall1(-width / 2+5, 0, -depth / 2, (int)(width / 8), (int)(height / 7), 8.0f, 0.0f, 0.0f, 0.0f, this->wallTex);
     backWall1.draw();
-
+    drawCarShowcase(car, -width * 0.25f, -depth * 0.25f);
     Wall backWall(-width / 6, 0, -depth / 9, (int)(width / 8), (int)(height / 6), 3.0f, 1.0f, 1.0f, 1.0f, this->wallTex1);
-    backWall.draw();
+    //backWall.draw();
 
     drawSideGlassFrames();
     drawModernFrames();
@@ -376,8 +376,7 @@ void Showroom::render() {
 
     
     if (isNightMode) {
-        glEnable(GL_LIGHT2); // كشاف إضافي للبوابة
-        // نضع الكشاف فوق البوابة وأمامها قليلاً ليوجه الضوء عليها
+        glEnable(GL_LIGHT2); 
         GLfloat portalLightPos[] = { 0.0f, height + 10.0f, glassZPos + 10.0f, 1.0f };
         GLfloat portalLightDir[] = { 0.0f, -1.0f, -0.8f }; 
         GLfloat portalLightColor[] = { 1.0f, 1.0f, 1.0f, 1.0f }; 
@@ -419,9 +418,194 @@ void Showroom::render() {
     CurbConnector connector;
     connector.draw(this, gardenStartX + gardenLength + segmentLen - 2, frontZ - 12.0f, curveRadius);
 }
-
 void Showroom::adjustSize(float deltaW, float deltaD) {
     width += deltaW;
     depth += deltaD;
     glassZPos = depth / 2.0f;
+}
+void Showroom::drawCarShowcase(Cybertruck& car, float x, float z) {
+    float gW = (width / 2.0f) - 15.0f; 
+    float gD = 130.0f;                 
+    float gH = 55.0f;               
+    float centerX = (-width / 2.0f) + (gW / 2.0f) + 5.0f;
+
+    glPushMatrix();
+    glTranslatef(centerX, gH + 0.1f, z);
+    drawBox(0, 0, 0, gW + 4.0f, 0.2f, gD + 4.0f, 0.02f, 0.02f, 0.02f, 1.0f);
+    glPopMatrix();
+
+    int gridCount = 5;
+    float xStart = centerX - (gW * 0.4f); 
+    float xStep = (gW * 0.8f) / (gridCount - 1);
+
+    float zStart = z - (gD * 0.4f); 
+    float zStep = (gD * 0.8f) / (gridCount - 1); 
+
+    for (int i = 0; i < gridCount; i++) {
+        float lx = xStart + (i * xStep);
+        drawBox(lx, gH - 0.15f, z, 0.3f, 0.3f, gD, 0.12f, 0.12f, 0.15f, 1.0f);
+    }
+
+    for (int j = 0; j < gridCount; j++) {
+        float lz = zStart + (j * zStep);
+        drawBox(centerX, gH - 0.15f, lz, gW, 0.3f, 0.3f, 0.12f, 0.12f, 0.15f, 1.0f);
+    }
+
+    for (int i = 0; i < gridCount; i++) {
+        for (int j = 0; j < gridCount; j++) {
+            float lx = xStart + (i * xStep);
+            float lz = zStart + (j * zStep);
+
+            glPushMatrix();
+            glTranslatef(lx, gH - 0.1f, lz);
+            glColor3f(0.08f, 0.08f, 0.08f);
+            glPushMatrix(); glScalef(6.0f, 0.4f, 6.0f); glutSolidCube(1.0); glPopMatrix();
+
+            glColor3f(0.3f, 0.3f, 0.3f);
+            for (float bx : {-2.5f, 2.5f}) for (float bz : {-2.5f, 2.5f}) {
+                glPushMatrix(); glTranslatef(bx, -0.2f, bz); glutSolidSphere(0.12, 8, 8); glPopMatrix();
+            }
+            glPopMatrix();
+
+            glPushMatrix();
+            glTranslatef(lx, gH - 0.3f, lz);
+            glRotatef(90, 1, 0, 0);
+            glColor3f(0.5f, 0.5f, 0.52f);
+            glutSolidCone(2.2, 1.0, 20, 1);
+            glPopMatrix();
+
+            glPushMatrix();
+            glTranslatef(lx, gH - 0.45f, lz);
+            if (isNightMode) glColor3f(1.0f, 1.0f, 0.8f);
+            else glColor3f(0.95f, 0.95f, 1.0f);
+            glutSolidSphere(0.5, 16, 16);
+            glPopMatrix();
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+            glPushMatrix();
+            glTranslatef(lx, gH - 0.45f, lz);
+            glColor4f(1.0f, 1.0f, 0.9f, 0.2f);
+            glutSolidSphere(1.0, 12, 12);
+            glPopMatrix();
+
+            glPushMatrix();
+            glTranslatef(lx, gH - 0.05f, lz);
+            glRotatef(90, 1, 0, 0);
+            glColor4f(1.0f, 0.9f, 0.7f, 0.1f);
+            glutSolidTorus(0.1, 3.5, 10, 24);
+            glPopMatrix();
+
+            glDisable(GL_BLEND);
+        }
+    }
+    float uniformScale = 9.5f;
+
+    float frontZ = z + 30.0f;
+    drawPlatform(centerX, frontZ, 1.0f, 0.0f, 0.0f); 
+    glPushMatrix();
+    glTranslatef(centerX, 5.8f, frontZ);
+    glScalef(uniformScale, uniformScale, uniformScale);
+    glRotatef(65.0f, 0, 1, 0);
+    car.render();
+    glPopMatrix();
+
+    float backZ = z - 10.0f;
+    float sideOffset = gW * 0.28f;
+
+    float backPositions[2][2] = {
+        {centerX - sideOffset, backZ}, 
+        {centerX + sideOffset, backZ} 
+    };
+
+    for (int i = 0; i < 2; i++) {
+        glPushMatrix();
+
+        glTranslatef(backPositions[i][0], 0.05f, backPositions[i][1]);
+
+        glColor3f(0.08f, 0.08f, 0.08f); 
+        glPushMatrix();
+        glScalef(40.0f, 0.8f, 22.0f);
+        glutSolidCube(1.0);
+        glPopMatrix();
+
+        glTranslatef(0.0f, 5.7f, 0.0f);
+
+        glPushMatrix();
+        glScalef(uniformScale, uniformScale, uniformScale);
+
+        if (i == 0) glRotatef(35.0f, 0, 1, 0);
+        else glRotatef(-35.0f, 0, 1, 0);     
+
+        car.render();
+        glPopMatrix();
+
+        glPopMatrix(); 
+    }
+
+    renderAdvancedGlass(centerX, z, gW, gD, gH);
+}
+void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glDepthMask(GL_TRUE);
+
+    glColor3f(0.1f, 0.1f, 0.1f);
+    float cols[4][2] = { {x - w / 2, z - d / 2}, {x + w / 2, z - d / 2}, {x - w / 2, z + d / 2}, {x + w / 2, z + d / 2} };
+
+    for (int i = 0; i < 4; i++) {
+        glPushMatrix();
+        glTranslatef(cols[i][0], h / 2, cols[i][1]);
+        glScalef(1.8f, h, 1.8f);
+        glutSolidCube(1.0);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(cols[i][0], 0.5f, cols[i][1]);
+        glScalef(3.5f, 1.0f, 3.5f);
+        glutSolidCube(1.0);
+        glPopMatrix();
+    }
+
+    for (float level = 0.33f; level <= 1.0f; level += 0.33f) {
+        drawBox(x, h * level, z - d / 2, w, 0.8f, 0.8f, 0.1f, 0.1f, 0.1f, 1.0f);
+        drawBox(x - w / 2, h * level, z, 0.8f, 0.8f, d, 0.1f, 0.1f, 0.1f, 1.0f);
+        drawBox(x + w / 2, h * level, z, 0.8f, 0.8f, d, 0.1f, 0.1f, 0.1f, 1.0f);
+    }
+
+
+    glDepthMask(GL_FALSE); 
+
+    float rG = 0.6f, gG = 0.8f, bG = 1.0f, aG = 0.15f;
+    drawBox(x, 0, z - d / 2, w, h, 0.1f, rG, gG, bG, aG);      
+    drawBox(x - w / 2, 0, z, 0.1f, h, d, rG, gG, bG, 0.08f);  
+    drawBox(x + w / 2, 0, z, 0.1f, h, d, rG, gG, bG, aG);      
+
+    glPushMatrix();
+    glTranslatef(x, h + 0.2f, z);
+    drawBox(0, 0, 0, w - 2.0f, 0.1f, d - 2.0f, rG, gG, bG, 0.3f);
+    glPopMatrix();
+
+    static float doorPos = 0.0f;
+    if (isCarDoorOpening) { if (doorPos < w * 0.75f) doorPos += 0.8f; }
+    else { if (doorPos > 0.0f) doorPos -= 0.8f; }
+
+    glPushMatrix();
+    glTranslatef(x - doorPos, 0, z + d / 2);
+    drawBox(0, h / 2, 0, w, h, 0.8f, 0.2f, 0.2f, 0.2f, 1.0f);     
+    drawBox(0, 0, 0, w - 1.0f, h, 0.2f, 1.0f, 1.0f, 1.0f, 0.25f); 
+
+    glDepthMask(GL_TRUE);
+    glColor3f(0.8f, 0.8f, 0.8f);
+    glPushMatrix();
+    glTranslatef(w / 2 - 2.0f, h / 2, 1.0f);
+    glScalef(0.5f, 8.0f, 0.5f);
+    glutSolidCube(1.0);
+    glPopMatrix();
+    glDepthMask(GL_FALSE);
+    glPopMatrix();
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
 }
