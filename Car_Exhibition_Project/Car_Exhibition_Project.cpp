@@ -15,7 +15,8 @@
 #include "ExternalEnvironment.h"
 #include "Sound.h"
 #include "Cybertruck.h"
-
+#include <glut.h> 
+#pragma comment(lib, "glut32.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "gdi32.lib")

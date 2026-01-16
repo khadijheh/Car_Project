@@ -12,7 +12,38 @@ public:
     GLuint bannerTex = 0;
     RedPortal(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 
+    void drawGlowingSign(const char* text, float x, float y, float z, float scale, float brightness)
+    {
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_LIGHTING); 
 
+        glDisable(GL_BLEND);
+
+        glColor3f(0.0f, 0.0f, 0.0f);
+
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glScalef(scale, scale, scale);
+        glScalef(-1.0f, 1.0f, 1.0f);
+        glRotatef(180, 0, 1, 0);
+
+       
+        float offsetsX[] = { 0.0f, 0.7f, -0.7f, 0.0f, 0.0f };
+        float offsetsY[] = { 0.0f, 0.0f, 0.0f, 0.7f, -0.7f };
+
+        for (int j = 0; j < 5; j++) {
+            glPushMatrix();
+            glTranslatef(offsetsX[j], offsetsY[j], 0.0f);
+            for (int i = 0; text[i]; i++) {
+                glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+            }
+            glPopMatrix();
+        }
+
+        glPopMatrix();
+        glPopAttrib();
+    }
     void drawSingleFaceCentered(float width, float height, float r, float g, float b, float alpha = 1.0f) {
         glColor4f(r, g, b, alpha);
         glBegin(GL_QUADS);
@@ -270,6 +301,7 @@ public:
         drawSingleFaceCentered(12.0f, 5.0f, 1.0f, 1.0f, 1.0f);
 
         glMaterialfv(GL_FRONT, GL_EMISSION, emissionDay);
+        drawGlowingSign("CAR", -4.0, -1.5f, 0.15f, 0.03f, 1.0f);
         glPopMatrix();
 
         glPushMatrix();
