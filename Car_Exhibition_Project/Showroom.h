@@ -26,8 +26,8 @@ private:
     void drawModernFrames();
     void drawSideGlassFrames();
     void drawBackBeam();
-  
 
+ 
 public:
     CarModel showcaseCar;
     void drawCarDisplaySection(float x, float z);

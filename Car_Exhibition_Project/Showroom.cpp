@@ -373,7 +373,6 @@ void Showroom::render(Cybertruck& car) {
 
    
     drawPlatform(width * 0.25f, -depth * 0.25f, 0, 0, 1);
-    //drawPlatform(-width * 0.25f, depth * 0.25f, 0, 1, 0);
     drawPlatform(width * 0.25f, depth * 0.25f, 1, 1, 0.5f);
 
     drawImprovedLeftWall();
@@ -385,11 +384,7 @@ void Showroom::render(Cybertruck& car) {
     drawCarShowcase(car, -width * 0.25f, -depth * 0.25f);
     drawCarDisplaySection(-width * 0.15f, depth * 0.30f);
    
-    Wall backWall(-width / 6, 0, -depth / 9, (int)(width / 8), (int)(height / 6), 3.0f, 1.0f, 1.0f, 1.0f, this->wallTex1);
-    //backWall.draw();
-
-        // ---------------------------         ++++
-// هنا استدعاء الغرفة العائلية
+ 
     float roomX = (width / 4) + 5.0f;   // موقع الغرفة على محور X
     float roomZ = -depth / 4 + 2.0f;    // موقع الغرفة على محور Z
     float roomW = (width / 2) - 15.0f;        // عرض الغرفة
