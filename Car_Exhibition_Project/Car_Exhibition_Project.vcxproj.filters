@@ -288,16 +288,22 @@
     <Image Include="OIP.bmp">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="red.bmp">
+    <Image Include="rrr.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="t1.bmp">
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="rim.bmp">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="rrr.bmp">
+    <Image Include="red.bmp">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="t1.bmp">
+    <Image Include="cha1.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="cha2.bmp">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>

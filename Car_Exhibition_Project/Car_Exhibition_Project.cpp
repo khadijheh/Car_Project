@@ -345,6 +345,7 @@ void InitScene() {
     myShowroom.staffDoorTex = LoadTexture((char*)"door1.bmp", 255);
     myShowroom.asphaltTexture = LoadTexture((char*)"flo1.bmp", 255);
     myShowroom.ceilingTex = LoadTexture((char*)"ceiling.bmp", 255);
+    myShowroom.img1 = LoadTexture((char*)"rrr.bmp", 255);
     LoadTextureToSideArray(myEnv.bTex1, "building1.bmp");
     LoadTextureToSideArray(myEnv.bTex2, "building2.bmp");
     LoadTextureToSideArray(myEnv.bTex3, "building3.bmp");
@@ -352,6 +353,10 @@ void InitScene() {
     LoadTextureToSideArray(myEnv.roadTex, "road4.bmp");
     LoadTextureToSideArray(myEnv.road2Tex, "road111.bmp");
     LoadTextureToSideArray(myEnv.grassTex, "gress.bmp");
+    myShowroom.showcaseCar.texBody = LoadTexture((char*)"red.bmp", 255);
+    myShowroom.showcaseCar.texWheel = LoadTexture((char*)"carwheel.bmp", 255);
+    myShowroom.showcaseCar.texRim = LoadTexture((char*)"rim.bmp", 255);
+    myShowroom.showcaseCar.texNumber = LoadTexture((char*)"OIP.bmp", 255);
     const char* faces[6] = {
         "right.bmp",
         "left.bmp",
@@ -443,7 +448,7 @@ void RenderScene() {
     glRotatef(camAngleX, 1, 0, 0);
     glRotatef(camAngleY, 0, 1, 0);
     glTranslatef(-camX, -camY, -camZ);
-    Draw_Skybox(5.0f, 5.0f, 5.0f);
+    Draw_Skybox(4.0f, 4.0f, 4.0f);
 
     ApplyLighting();
     myEnv.render();

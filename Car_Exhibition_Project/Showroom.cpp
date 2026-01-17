@@ -373,7 +373,7 @@ void Showroom::render(Cybertruck& car) {
 
    
     drawPlatform(width * 0.25f, -depth * 0.25f, 0, 0, 1);
-    drawPlatform(-width * 0.25f, depth * 0.25f, 0, 1, 0);
+    //drawPlatform(-width * 0.25f, depth * 0.25f, 0, 1, 0);
     drawPlatform(width * 0.25f, depth * 0.25f, 1, 1, 0.5f);
 
     drawImprovedLeftWall();
@@ -383,6 +383,8 @@ void Showroom::render(Cybertruck& car) {
     Wall backWall1(-width / 2+5, 0, -depth / 2, (int)(width / 8), (int)(height / 7), 8.0f, 0.0f, 0.0f, 0.0f, this->wallTex);
     backWall1.draw();
     drawCarShowcase(car, -width * 0.25f, -depth * 0.25f);
+    drawCarDisplaySection(-width * 0.15f, depth * 0.30f);
+   
     Wall backWall(-width / 6, 0, -depth / 9, (int)(width / 8), (int)(height / 6), 3.0f, 1.0f, 1.0f, 1.0f, this->wallTex1);
     //backWall.draw();
 
@@ -588,8 +590,8 @@ void Showroom::drawCarShowcase(Cybertruck& car, float x, float z) {
         glPushMatrix();
         glScalef(uniformScale, uniformScale, uniformScale);
 
-        if (i == 0) glRotatef(35.0f, 0, 1, 0);
-        else glRotatef(-35.0f, 0, 1, 0);     
+        if (i == 0) glRotatef(65.0f, 0, 1, 0);
+        else glRotatef(65.0f, 0, 1, 0);     
 
         car.render();
         glPopMatrix();
@@ -674,4 +676,154 @@ void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) 
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+}
+
+
+void Showroom::drawCarDisplaySection(float x, float z) {
+    float roomW = width * 0.20f;
+    float roomD = depth * 0.3f;
+    float roomH = height - 10.0f;
+
+    glPushMatrix();
+    glTranslatef(x, 0.0f, z);
+
+   
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, img1);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_QUADS);
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(0, 0); glVertex3f(-roomW / 2, 0.05f, -roomD / 2);
+    glTexCoord2f(4, 0); glVertex3f(roomW / 2, 0.05f, -roomD / 2);
+    glTexCoord2f(4, 4); glVertex3f(roomW / 2, 0.05f, roomD / 2);
+    glTexCoord2f(0, 4); glVertex3f(-roomW / 2, 0.05f, roomD / 2);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+  
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_TRIANGLE_FAN);
+    glColor4f(0, 0, 0, 0.5f);
+    glVertex3f(0, 0.06f, 0);
+    for (int i = 0; i <= 32; i++) {
+        float a = i * 2.0f * 3.14159f / 32;
+        glColor4f(0, 0, 0, 0.0f); 
+        glVertex3f(cos(a) * 6.0f, 0.06f, sin(a) * 3.0f);
+    }
+    glEnd();
+    glDisable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+
+    glColor3f(0.3f, 0.3f, 0.33f);
+    float corners[4][2] = { {-1, -1}, {1, -1}, {1, 1}, {-1, 1} };
+    for (int i = 0; i < 4; i++) {
+        glPushMatrix();
+        glTranslatef((roomW / 2) * corners[i][0], roomH / 2, (roomD / 2) * corners[i][1]);
+        glScalef(0.6f, roomH, 0.6f);
+        glutSolidCube(1.0f);
+        glPopMatrix();
+    }
+
+   
+    glColor3f(0.2f, 0.2f, 0.22f);
+    glBegin(GL_QUADS);
+    glVertex3f(-roomW / 2, roomH, -roomD / 2); glVertex3f(roomW / 2, roomH, -roomD / 2);
+    glVertex3f(roomW / 2, roomH, -roomD / 4);  glVertex3f(-roomW / 2, roomH, -roomD / 4);
+    glVertex3f(-roomW / 2, roomH, roomD / 4);  glVertex3f(roomW / 2, roomH, roomD / 4);
+    glVertex3f(roomW / 2, roomH, roomD / 2);   glVertex3f(-roomW / 2, roomH, roomD / 2);
+    glEnd();
+
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
+    glBegin(GL_QUADS);
+    glVertex3f(-roomW / 4, roomH + 0.2f, -roomD / 4);
+    glVertex3f(roomW / 4, roomH + 0.2f, -roomD / 4);
+    glVertex3f(roomW / 4, roomH + 0.2f, roomD / 4);
+    glVertex3f(-roomW / 4, roomH + 0.2f, roomD / 4);
+    glEnd();
+
+    glColor4f(0.9f, 0.9f, 1.0f, 0.4f);
+    glLineWidth(1.0f);
+    glBegin(GL_LINES);
+    for (float i = -roomW / 2; i <= roomW / 2; i += 2.0f) {
+        glVertex3f(i, roomH - 0.05f, -roomD / 2);
+        glVertex3f(i, roomH - 0.05f, roomD / 2);
+    }
+    for (float j = -roomD / 2; j <= roomD / 2; j += 2.0f) {
+        glVertex3f(-roomW / 2, roomH - 0.05f, j);
+        glVertex3f(roomW / 2, roomH - 0.05f, j);
+    }
+    glEnd();
+    glDisable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+
+    float spotDistW = roomW / 3;
+    float spotDistD = roomD / 3;
+    float lightsPos[4][2] = { {-1,-1}, {1,-1}, {1,1}, {-1,1} };
+
+    for (int i = 0; i < 4; i++) {
+        glPushMatrix();
+        glTranslatef(lightsPos[i][0] * spotDistW, roomH - 0.1f, lightsPos[i][1] * spotDistD);
+        glDisable(GL_LIGHTING);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glutSolidSphere(0.2f, 16, 16);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glColor4f(1.0f, 1.0f, 1.0f, 0.2f);
+        glRotatef(90, 1, 0, 0);
+        glutSolidCone(0.8f, 1.5f, 16, 8); 
+        glDisable(GL_BLEND);
+        glEnable(GL_LIGHTING);
+        glPopMatrix();
+    }
+
+    glPushMatrix();
+    glTranslatef(0.0f, 7.0f, 0.0f);
+    glScalef(12.0f, 12.0f, 12.0f);
+    glRotatef(-135.0f, 0, 1, 0);
+    GLfloat mat_ambient[] = { 0.25f, 0.25f, 0.25f, 1.0f };
+    GLfloat mat_diffuse[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+    GLfloat mat_specular[] = { 0.9f, 0.9f, 0.9f, 1.0f }; 
+    GLfloat shininess[] = { 80.0f }; 
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_TEXTURE_2D);
+    showcaseCar.draw();
+    glDisable(GL_TEXTURE_2D);
+
+    glPopMatrix();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.8f, 0.9f, 1.0f, 0.25f); 
+    glBegin(GL_QUADS);
+    glVertex3f(-roomW / 2, 0, -roomD / 2);
+    glVertex3f(roomW / 2, 0, -roomD / 2);
+    glVertex3f(roomW / 2, roomH, -roomD / 2);
+    glVertex3f(-roomW / 2, roomH, -roomD / 2);
+    glVertex3f(roomW / 2, 0, -roomD / 2);
+    glVertex3f(roomW / 2, 0, roomD / 2);
+    glVertex3f(roomW / 2, roomH, roomD / 2);
+    glVertex3f(roomW / 2, roomH, -roomD / 2);
+    glEnd();
+    glDisable(GL_BLEND);
+
+    glPopMatrix();
+    //    /*if (tableModel) {
+//        glPushMatrix();
+//        glTranslatef(x + 15.0f, 0.0f, z);
+//        tableModel->Draw();
+//        glPopMatrix();
+//    }*/
 }

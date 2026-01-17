@@ -182,6 +182,8 @@
     <Image Include="ca1111.bmp" />
     <Image Include="carwheel.bmp" />
     <Image Include="Car_Exhibition_Project.ico" />
+    <Image Include="cha1.bmp" />
+    <Image Include="cha2.bmp" />
     <Image Include="door1.bmp" />
     <Image Include="flag.bmp" />
     <Image Include="flo1.bmp" />

@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_DEPRECATE
+﻿#define _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_WARNINGS 
 
 #include <stdio.h>
@@ -29,65 +29,63 @@ int num_texture=-1; //Counter to keep track of the last loaded texture
  *
  *********************************************************/
 
-int LoadTexture( char *filename,int alpha) 
+int LoadTexture(char* filename, int alpha)
 {
-    int i, j=0; //Index variables
-    FILE *l_file; //File pointer
-    unsigned char *l_texture; //The pointer to the memory zone in which we will load the texture
-     
-    // windows.h gives us these types to work with the Bitmap files
-    BITMAPFILEHEADER fileheader; 
+    int i, j = 0;
+    FILE* l_file;
+    unsigned char* l_texture;
+    BITMAPFILEHEADER fileheader;
     BITMAPINFOHEADER infoheader;
     RGBTRIPLE rgb;
 
-    num_texture++; // The counter of the current texture is increased
+    num_texture++;
 
-    if( (l_file = fopen(filename, "rb"))==NULL) return (-1); // Open the file for reading
-    
-    fread(&fileheader, sizeof(fileheader), 1, l_file); // Read the fileheader
-    
-    fseek(l_file, sizeof(fileheader), SEEK_SET); // Jump the fileheader
-    fread(&infoheader, sizeof(infoheader), 1, l_file); // and read the infoheader
+    if ((l_file = fopen(filename, "rb")) == NULL) return (-1);
 
-    // Now we need to allocate the memory for our image (width * height * color deep)
-    l_texture = (byte *) malloc(infoheader.biWidth * infoheader.biHeight * 4);
-    // And fill it with zeros
-    memset(l_texture, 0, infoheader.biWidth * infoheader.biHeight * 4);
- 
-    // At this point we can read every pixel of the image
-    for (i=0; i < infoheader.biWidth*infoheader.biHeight; i++)
-    {            
-            // We load an RGB value from the file
-            fread(&rgb, sizeof(rgb), 1, l_file); 
+    fread(&fileheader, sizeof(fileheader), 1, l_file);
+    fseek(l_file, sizeof(fileheader), SEEK_SET);
+    fread(&infoheader, sizeof(infoheader), 1, l_file);
 
-            // And store it
-            l_texture[j+0] = rgb.rgbtRed; // Red component
-            l_texture[j+1] = rgb.rgbtGreen; // Green component
-            l_texture[j+2] = rgb.rgbtBlue; // Blue component
-            l_texture[j+3] = alpha; // Alpha value
-            j += 4; // Go to the next position
+    // حساب الـ Padding (الحشو) لضمان عدم تشوه الصور
+    int width = infoheader.biWidth;
+    int height = infoheader.biHeight;
+    int padding = (4 - (width * 3) % 4) % 4; // حساب بايتات الحشو في كل سطر
+
+    l_texture = (byte*)malloc(width * height * 4);
+    memset(l_texture, 0, width * height * 4);
+
+    for (i = 0; i < height; i++)
+    {
+        for (int k = 0; k < width; k++)
+        {
+            fread(&rgb, sizeof(rgb), 1, l_file);
+            // تصحيح ترتيب الألوان: BMP يقرأ Blue-Green-Red
+            l_texture[j + 0] = rgb.rgbtRed;   // Red
+            l_texture[j + 1] = rgb.rgbtGreen; // Green
+            l_texture[j + 2] = rgb.rgbtBlue;  // Blue
+            l_texture[j + 3] = alpha;         // Alpha
+            j += 4;
+        }
+        // القفز فوق بايتات الـ Padding في نهاية كل سطر لكي لا تزحف البكسلات
+        fseek(l_file, padding, SEEK_CUR);
     }
 
-    fclose(l_file); // Closes the file stream
+    fclose(l_file);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glBindTexture(GL_TEXTURE_2D, num_texture); // Bind the ID texture specified by the 2nd parameter
+    glBindTexture(GL_TEXTURE_2D, num_texture);
 
-    // The next commands sets the texture parameters
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // If the u,v coordinates overflow the range 0,1 the image is repeated
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // The magnification function ("linear" produces better results)
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //The minifying function
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    // Finally we define the 2d texture
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, infoheader.biWidth, infoheader.biHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+    // استخدام GL_RGBA لضمان دعم الشفافية
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, width, height, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
 
-    // And create 2d mipmaps for the minifying function
-    gluBuild2DMipmaps(GL_TEXTURE_2D, 4, infoheader.biWidth, infoheader.biHeight, GL_RGBA, GL_UNSIGNED_BYTE, l_texture);
-
-    free(l_texture); // Free the memory we used to load the texture
-
-    return (num_texture); // Returns the current texture OpenGL ID
+    free(l_texture);
+    return (num_texture);
 }
 

@@ -9,17 +9,15 @@
 #include "Wall.h"
 #include "RedPortal.h"
 #include "Cybertruck.h"
+#include "CarModel.h"
+#include "Model_3DS.h"
 
 class Showroom {
 private:
     float width, height, depth;
     float glassZPos;
     
-  
     bool isNightMode;
-  
-    
-  
     void drawPlatform(float x, float z, float r, float g, float b);
     void drawRealisticCarDoor(float x, float y, float z, float w, float h, float d,float openAngle);
     void drawRealisticStairDoor(float x, float y, float z, float w, float h, float d, float openAngle);
@@ -31,16 +29,20 @@ private:
   
 
 public:
+    CarModel showcaseCar;
+    void drawCarDisplaySection(float x, float z);
+    void drawTableAndChairs(float x, float z);
+    Model_3DS* tableModel;
     float doorPos;    
     float doorAlpha;
-   void  setupShowcaseLighting(float x, float h, float z);
+    float doorAngle = 0.0f;
     void drawCarShowcase(Cybertruck& car, float x, float z);
     void renderAdvancedGlass(float x, float z, float w, float d, float h);
     float personDoorOpenAngle;
     int asphaltTexture;
     int floorTex;
     int  wallTex;
-    int  wallTex1;
+    int  wallTex1,img1;
     int ceilingTex;
     void drawFloorTexture(int floorTexID);
     int staffDoorTex;
