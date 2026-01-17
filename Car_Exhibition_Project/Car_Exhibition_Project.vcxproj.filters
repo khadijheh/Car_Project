@@ -314,6 +314,15 @@
     <None Include="A032.3DS">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Cactus.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="desk.3DS">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="chair.3ds">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound.wav">

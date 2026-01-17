@@ -297,14 +297,23 @@ void DrawVegetation() {
 
     for (int i = 0; i < 2; i++) {
         glPushMatrix();
-        glTranslatef(plantX[i], 12.0f, 130.0f);
-        glScalef(2.0f, 2.0f, 2.0f);
-        glColor3f(0.82f, 0.78f, 0.60f);
+        glTranslatef(plantX[i], 13.0f, 130.0f);
+         glScalef(2.0f, 2.0f, 2.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(0.82f, 0.78f, 0.60f, 0.5f);
 
+        glDisable(GL_LIGHTING); 
 
-        glDisable(GL_LIGHTING);
-        plantModel.Draw();
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.1f);
+
+        plantModel.Draw(); 
+
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
         glEnable(GL_LIGHTING);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f); 
 
         glPopMatrix();
     }
@@ -366,6 +375,8 @@ void InitScene() {
     LoadSkybox(skyboxNightTex, nightFaces);
     treeModel.Load((char*)"Tree1.3ds");
     plantModel.Load((char*)"Plant 3.3ds");
+   
+    //plantModel.Load((char*)"Cactus.3ds");
    
     glDisable(GL_TEXTURE_2D);
    

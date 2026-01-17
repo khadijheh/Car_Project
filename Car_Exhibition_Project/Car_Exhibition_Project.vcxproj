@@ -227,7 +227,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="A032.3DS" />
+    <None Include="Cactus.3ds" />
     <None Include="Car.3ds" />
+    <None Include="chair.3ds" />
+    <None Include="desk.3DS" />
     <None Include="Plant 3.3ds" />
     <None Include="Tree1.3ds" />
   </ItemGroup>
