@@ -337,7 +337,9 @@ void InitScene() {
     GLfloat mat_shininess[] = { 50.0 };
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
+    myShowroom.glassRoomFloorTex = LoadTexture((char*)"floor.bmp", 255);// ++++A
+    myShowroom.glassRoomRoofTex = LoadTexture((char*)"ceiling.bmp", 255);// ++++A
+    myShowroom.wallBackTex = LoadTexture((char*)"flag.bmp", 255);// ++++A
     myShowroom.floorTex = LoadTexture((char*)"floor2.bmp", 255);
     myShowroom.wallTex = LoadTexture((char*)"wallBlock.bmp", 255);
     myShowroom.wallTex1 = LoadTexture((char*)"frontOut.bmp", 255);
@@ -470,6 +472,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
         float nextX = camX;
         float nextZ = camZ;
+        if (wParam == '1')//     ++++  A
+            myShowroom.isGlassDoorOpen = !myShowroom.isGlassDoorOpen;
 
         if (wParam == 'W') {
             nextX += sin(camAngleY * 3.14 / 180) * speed;
