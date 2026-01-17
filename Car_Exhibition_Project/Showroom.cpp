@@ -386,6 +386,16 @@ void Showroom::render(Cybertruck& car) {
     Wall backWall(-width / 6, 0, -depth / 9, (int)(width / 8), (int)(height / 6), 3.0f, 1.0f, 1.0f, 1.0f, this->wallTex1);
     //backWall.draw();
 
+        // ---------------------------         ++++
+// هنا استدعاء الغرفة العائلية
+    float roomX = (width / 4) + 5.0f;   // موقع الغرفة على محور X
+    float roomZ = -depth / 4 + 2.0f;    // موقع الغرفة على محور Z
+    float roomW = (width / 2) - 15.0f;        // عرض الغرفة
+    float roomD = 93.0f;        // عمق الغرفة
+    float roomH = 55.0f;        // ارتفاع الغرفة
+    drawFamilyGlassRoom(roomX, roomZ, roomW, roomD, roomH);
+
+
     drawSideGlassFrames();
     drawModernFrames();
     drawProfessionalGlass();
@@ -673,5 +683,161 @@ void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) 
     }
 
     glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+}
+void Showroom::drawFamilyGlassRoom(float x, float z, float w, float d, float h)
+{
+    // ================= تفعيل الدمج للشفافية =================
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    float baseY = 0.05f;
+    float glassAlpha = 0.15f;
+    float frameSize = 1.2f;
+
+    // ================= أرضية الغرفة بخامة =================
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, glassRoomFloorTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glColor4f(1, 1, 1, 1);
+
+    glBegin(GL_QUADS);
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(0, 0); glVertex3f(x - w / 2, baseY, z - d / 2);
+    glTexCoord2f(1, 0); glVertex3f(x + w / 2, baseY, z - d / 2);
+    glTexCoord2f(1, 1); glVertex3f(x + w / 2, baseY, z + d / 2);
+    glTexCoord2f(0, 1); glVertex3f(x - w / 2, baseY, z + d / 2);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+
+    // ================= أعمدة الزوايا =================
+    float corners[4][2] = {
+        {x - w / 2, z - d / 2}, {x + w / 2, z - d / 2},
+        {x - w / 2, z + d / 2}, {x + w / 2, z + d / 2}
+    };
+    for (int i = 0; i < 4; i++) {
+        drawBox(corners[i][0], baseY, corners[i][1],
+            frameSize, h, frameSize,
+            0.2f, 0.2f, 0.25f, 1.0f);
+    }
+
+    // ================= الجدار الخلفي بخامة =================
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, wallBackTex); //  الخامة الخاصة بالجدار الخلفي
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glColor4f(1, 1, 1, 1);
+
+    glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1); // اتجاه الجدار نحو الأمام
+    glTexCoord2f(0, 0); glVertex3f(x - w / 2, baseY, z - d / 2);
+    glTexCoord2f(1, 0); glVertex3f(x + w / 2, baseY, z - d / 2);
+    glTexCoord2f(1, 1); glVertex3f(x + w / 2, baseY + h, z - d / 2);
+    glTexCoord2f(0, 1); glVertex3f(x - w / 2, baseY + h, z - d / 2);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+
+    // ================= الجدران الزجاجية =================
+    glDepthMask(GL_FALSE);
+    drawBox(x, baseY, z - d / 2, w, h, 0.05f, 0.05f, 0.05f, 1.0f, glassAlpha); // خلف الزجاج
+    drawBox(x - w / 2, baseY, z, 0.4f, h, d, 0.05f, 0.05f, 1.0f, glassAlpha); // يسار
+    drawBox(x + w / 2, baseY, z, 0.4f, h, d, 0.05f, 0.05f, 1.0f, glassAlpha); // يمين
+    glDepthMask(GL_TRUE);
+    // ================= الباب الزجاجي الأمامي =================
+    float doorThickness = 0.35f;
+    if (isGlassDoorOpen && glassDoorHeight < h) glassDoorHeight += 0.6f;
+    if (!isGlassDoorOpen && glassDoorHeight > 0) glassDoorHeight -= 0.6f;
+
+    float visibleHeight = h - glassDoorHeight;
+    float doorY = baseY + glassDoorHeight;
+
+    if (visibleHeight > 0) {
+        glPushMatrix();
+        glDisable(GL_LIGHTING);
+        GLfloat emissionDoor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_EMISSION, emissionDoor);
+        glDepthMask(GL_FALSE);
+        drawBox(x, doorY, z + d / 2,
+            w, visibleHeight, doorThickness,
+            0.05f, 0.05f, 0.05f, 0.4f);
+        glDepthMask(GL_TRUE);
+        GLfloat noEmission[4] = { 0,0,0,1.0f };
+        glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
+        glEnable(GL_LIGHTING);
+        glPopMatrix();
+    }
+
+    // ================= نص FAMILY CARS =================
+    glPushMatrix();
+    float textX = x - w / 4;
+    float textY = doorY + visibleHeight / 4;
+    float textZ = z + d / 2 + doorThickness + 0.01f;
+    glTranslatef(textX, textY, textZ);
+    glScalef(0.12f, 0.12f, 0.12f);
+
+    const char* text = "FAMILY CARS";
+    glDisable(GL_LIGHTING);
+
+    GLfloat emissionColor[4] = { 5.0f, 4.5f, 1.0f, 1.0f };
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionColor);
+    glColor3f(5.0f, 4.5f, 1.0f);
+
+    float offsets[4][2] = {
+        {0.009f, 0.0f}, {-0.009f, 0.0f},
+        {0.0f, 0.009f}, {0.0f,-0.009f}
+    };
+    for (int j = 0; j < 4; j++) {
+        glPushMatrix();
+        glTranslatef(offsets[j][0], offsets[j][1], 0);
+        for (const char* c = text; *c; c++)
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, *c);
+        glPopMatrix();
+    }
+    for (const char* c = text; *c; c++)
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *c);
+
+    GLfloat noEmission[4] = { 0,0,0,1.0f };
+    glMaterialfv(GL_FRONT, GL_EMISSION, noEmission);
+    glEnable(GL_LIGHTING);
+    glPopMatrix();
+
+    // ================= سقف الغرفة بخامة =================
+    glDisable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, glassRoomRoofTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glColor4f(1, 1, 1, 1);
+
+    float ceilingY = baseY + h;
+    glBegin(GL_QUADS);
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0, 0); glVertex3f(x - w / 2, ceilingY, z - d / 2);
+    glTexCoord2f(1, 0); glVertex3f(x + w / 2, ceilingY, z - d / 2);
+    glTexCoord2f(1, 1); glVertex3f(x + w / 2, ceilingY, z + d / 2);
+    glTexCoord2f(0, 1); glVertex3f(x - w / 2, ceilingY, z + d / 2);
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+
+    // ================= اللافتة الزجاجية السوداء فوق الباب =================
+    float bannerHeight = 15.0f;
+    float bannerYTop = baseY + h + 0.1f;
+    glColor4f(0.0f, 0.0f, 0.0f, 0.7f);
+    drawBox(x, bannerYTop, z + d / 2, w, bannerHeight, 0.1f, 0, 0, 0, 0.7f);
+
     glDisable(GL_BLEND);
 }
