@@ -12,7 +12,7 @@ public:
     GLuint bannerTex = 0;
     RedPortal(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 
-    void drawGlowingSign(const char* text, float x, float y, float z, float scale, float brightness)
+  static  void drawGlowingSign(const char* text, float x, float y, float z, float scale, float brightness)
     {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_TEXTURE_2D);

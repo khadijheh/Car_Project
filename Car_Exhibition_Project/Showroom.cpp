@@ -441,7 +441,7 @@ void Showroom::adjustSize(float deltaW, float deltaD) {
 }
 void Showroom::drawCarShowcase(Cybertruck& car, float x, float z) {
     float gW = (width / 2.0f) - 15.0f; 
-    float gD = 130.0f;                 
+    float gD = 95.0f;                 
     float gH = 55.0f;               
     float centerX = (-width / 2.0f) + (gW / 2.0f) + 5.0f;
 
@@ -516,9 +516,46 @@ void Showroom::drawCarShowcase(Cybertruck& car, float x, float z) {
             glDisable(GL_BLEND);
         }
     }
+    float signX = centerX - 10.0f;
+    float signY = gH - 25.0f; 
+    float signZ = z - 40.0f;
+    float pulse = (sin(glutGet(GLUT_ELAPSED_TIME) * 0.002f) * 0.5f) + 0.5f;
+
+    glPushMatrix();
+    glTranslatef(signX, signY, signZ);
+
+    drawBox(0, -5.0f, -0.5f, 55.0f, 15.0f, 1.2f, 0.05f, 0.05f, 0.05f, 1.0f);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    drawBox(0, -4.5f, 0.2f, 52.0f, 14.0f, 0.3f, 0.15f, 0.15f, 0.18f, 0.85f);
+
+    if (isNightMode) {
+        float glowR = 1.0f * pulse;
+        float glowG = 0.0f;
+        float glowB = 0.0f;
+
+        drawBox(0, 9.2f, 0.4f, 50.0f, 0.4f, 0.2f, glowR, glowG, glowB, 1.0f);
+        drawBox(0, -4.8f, 0.4f, 50.0f, 0.4f, 0.2f, glowR, glowG, glowB, 1.0f);
+
+        drawBox(-25.5f, -3.0f, 0.4f, 0.6f, 11.5f, 0.2f, 1.0f, 0.0f, 0.0f, 0.5f * pulse);
+        drawBox(25.5f, -3.0f, 0.4f, 0.6f, 11.5f, 0.2f, 1.0f, 0.0f, 0.0f, 0.5f * pulse);
+    }
+    glDisable(GL_BLEND);
+
+    glDisable(GL_LIGHTING);
+    glPushMatrix();
+    glColor3f(0.4f + (0.6f * pulse), 1.0f, 1.0f);
+
+    float hover = sin(glutGet(GLUT_ELAPSED_TIME) * 0.004f) * 0.2f;
+    RedPortal::drawGlowingSign("Cyber Truck", -21.0f, 0.0f + hover, 0.6f, 0.05f, 1.0f);
+    glPopMatrix();
+    glEnable(GL_LIGHTING);
+
+    glPopMatrix();
     float uniformScale = 9.5f;
 
-    float frontZ = z + 30.0f;
+    float frontZ = z + 20.0f;
     drawPlatform(centerX, frontZ, 1.0f, 0.0f, 0.0f); 
     glPushMatrix();
     glTranslatef(centerX, 5.8f, frontZ);
@@ -558,8 +595,8 @@ void Showroom::drawCarShowcase(Cybertruck& car, float x, float z) {
         glPopMatrix();
 
         glPopMatrix(); 
-    }
-
+    }  
+    
     renderAdvancedGlass(centerX, z, gW, gD, gH);
 }
 void Showroom::renderAdvancedGlass(float x, float z, float w, float d, float h) {
