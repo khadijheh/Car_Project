@@ -317,9 +317,6 @@
     <None Include="Car.3ds">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="A032.3DS">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="Cactus.3ds">
       <Filter>Source Files</Filter>
     </None>
@@ -327,6 +324,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="chair.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="fence.3ds">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

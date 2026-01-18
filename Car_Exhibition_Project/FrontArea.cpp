@@ -81,6 +81,15 @@ void FrontArea::drawParkingSlots(Showroom* s) {
         s->drawBox(i + 12.0f, yLine, frontZ, lineW, 0.05f, lineL, 1.0f, 1.0f, 1.0f, 0.9f);
 
         s->drawBox(i, yStopper, depth - 6.0f, 10.0f, 0.8f, 2.0f, 1.0f, 0.8f, 0.0f, 1.0f);
+        glPushMatrix();
+        glTranslatef(i, 5.6f, depth - (lineL / 2.0f));
+        glRotatef(-85.0f, 0, 1, 0);
+        glScalef(9.5f, 9.5f, 9.5f);
+
+        glEnable(GL_TEXTURE_2D);
+        s->showcaseCar.draw();
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
     }
 }
 void FrontArea::drawGreenBelts(Showroom* s) {

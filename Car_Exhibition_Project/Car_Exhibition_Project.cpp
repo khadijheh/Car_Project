@@ -35,7 +35,7 @@ buildingTexArray1[6],
 buildingTexArray2[6],
 buildingTexArray3[6], roadTexArray[6], roadTex2Array[6], grassTexArray[6], buildingTexArray4[6];
 float showroomWidth = 400.0f, showroomHeight = 70.0f, showroomDepth = 200.0f, glassZPos = showroomDepth / 2.0f, personDoorOpenAngle = 0.0f;
-Model_3DS treeModel,plantModel;
+Model_3DS treeModel,plantModel,p1;
 ExternalEnvironment myEnv;
 Cybertruck myCyber;
 void InitScene();
@@ -309,11 +309,36 @@ void DrawVegetation() {
         glAlphaFunc(GL_GREATER, 0.1f);
 
         plantModel.Draw(); 
-
+  
         glDisable(GL_ALPHA_TEST);
         glDisable(GL_BLEND);
         glEnable(GL_LIGHTING);
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f); 
+
+        glPopMatrix();
+    }
+    float planX[] = { -90.0f, -120.0f,90.0f, 120.0f };
+
+    for (int i = 0; i < 4; i++) {
+        glPushMatrix();
+        glTranslatef(planX[i], 0.0f, 130.0f);
+        glRotatef(25.0f, 0, 1, 0);
+        glScalef(7.0f, 7.0f, 7.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
+
+        glDisable(GL_LIGHTING);
+
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.1f);
+
+        p1.Draw();
+
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
+        glEnable(GL_LIGHTING);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
         glPopMatrix();
     }
@@ -383,8 +408,8 @@ void InitScene() {
     treeModel.Load((char*)"Tree1.3ds");
     plantModel.Load((char*)"Plant 3.3ds");
    
-    //plantModel.Load((char*)"Cactus.3ds");
-   
+    p1.Load((char*)"Car.3ds");
+    //plantModel.Load((char*)"fence.3ds");
     glDisable(GL_TEXTURE_2D);
    
 
