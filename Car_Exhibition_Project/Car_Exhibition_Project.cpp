@@ -44,7 +44,7 @@ float carDoorAngle = 0.0f;
 float doorAngle = 0.0f; 
 bool isInsideCar = false;
 float carSpeed = 0.0f;
-float carX = 0.0f, carZ = 180.0f;
+//float carX = 0.0f, carZ = 180.0f;
 float carAngle = 0.0f;
 bool isDriving = false; 
 void InitScene();
@@ -57,7 +57,8 @@ void Draw_Skybox(float width, float height, float length);
 bool LoadSkybox(GLuint texArray[6], const char* faces[6]);
 DirectSoundManager SoundMgr;
 DirectSoundBuffer MySound;
-
+float carX = -155.0f; 
+float carZ = 165.0f;    
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
     WNDCLASS wc = { 0 };
@@ -312,9 +313,10 @@ void UpdatePhysics() {
         camY = 14.0f; 
         camAngleY = carAngle - 180.0f;
 
-        carSpeed *= 200.0f; 
+        carSpeed *= 0.96;
     }
 }
+
 void drawMovingTraffic(float pos) {
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
@@ -592,6 +594,13 @@ void RenderScene() {
     myShowroom.setNightMode(isNight);
     myShowroom.update(camX, camZ);
     myShowroom.render(myCyber);
+    glPushMatrix();
+    glTranslatef(carX, 0.5f, carZ);
+    glRotatef(carAngle, 0.0f, 1.0f, 0.0f);
+    glScalef(4.5f, 4.5f, 4.5f); 
+
+    myShowroom.myCar.Draw();
+    glPopMatrix();
     DrawVegetation();
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -632,33 +641,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
 
         if (isDriving) {
-            if (wParam == 'W') carSpeed += 1.8f; 
-            if (wParam == 'S') carSpeed -= 1.2f;  
-            if (wParam == 'A') carAngle += 5.0f;  
-            if (wParam == 'D') carAngle -= 5.0f; 
+            if (wParam == 'W') carSpeed += 0.5f; 
+            if (wParam == 'S') carSpeed -= 0.5f;
+            if (wParam == 'A') carAngle += 3.0f;  
+            if (wParam == 'D') carAngle -= 3.0f;
+
             if (carSpeed > 5.0f) carSpeed = 5.0f;
             if (carSpeed < -2.0f) carSpeed = -2.0f;
-            nextCarX += sin(carAngle * 3.14159 / 180) * carSpeed;
-            nextCarZ += cos(carAngle * 3.14159 / 180) * carSpeed;
-
-            if (isLocationSafe(nextCarX, nextCarZ)) {
-                carX = nextCarX;
-                carZ = nextCarZ;
-            }
-
-           
-            float forwardOffset = -1.0f; 
-            float seatHeight = 20.0f;
-
-            camX = carX + sin(carAngle * 3.14159 / 180) * forwardOffset;
-            camZ = carZ + cos(carAngle * 3.14159 / 180) * forwardOffset;
-            camY = seatHeight;
-
-            camAngleY = carAngle + 180;
-
-            camAngleX = 5.0f + (carSpeed * 0.2f);
-
-            carSpeed *= 0.94f;
         }
         else {
             if (wParam == 'W') {
