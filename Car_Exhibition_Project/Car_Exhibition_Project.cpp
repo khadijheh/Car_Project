@@ -51,7 +51,7 @@ void InitScene();
 void RenderScene();
 void UpdatePhysics();
 float trafficCarPos = 0.0f;
-float trafficSpeed = 2.0f;
+float trafficSpeed = 10.0f;
 void ApplyLighting();
 void Draw_Skybox(float width, float height, float length);
 bool LoadSkybox(GLuint texArray[6], const char* faces[6]);
@@ -291,8 +291,8 @@ bool isLocationSafe(float x, float z) {
 }
 void UpdatePhysics() {
     trafficCarPos += trafficSpeed;
-    if (trafficCarPos > 1000.0f) { 
-        trafficCarPos = -1000.0f;
+    if (trafficCarPos > 900.0f) { 
+        trafficCarPos = -900.0f;
     }
     //myShowroom.showcaseCar.wheelRotation -= 5.0f;
     if (isDriving) {
@@ -312,7 +312,7 @@ void UpdatePhysics() {
         camY = 14.0f; 
         camAngleY = carAngle - 180.0f;
 
-        carSpeed *= 0.98f; 
+        carSpeed *= 200.0f; 
     }
 }
 void drawMovingTraffic(float pos) {
@@ -328,6 +328,12 @@ void drawMovingTraffic(float pos) {
     myShowroom.myCar.Draw(); 
     glPopMatrix();
     glPushMatrix();
+    glTranslatef(pos+400, 0.0f, 380.0f);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(5.5f, 5.5f, 5.5f);
+    myShowroom.myCar.Draw(); 
+    glPopMatrix();
+    glPushMatrix();
     glTranslatef(pos +200.0f, 0.0f, 380.0f);
     glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
     glScalef(5.5f, 5.5f, 5.5f);
@@ -337,14 +343,21 @@ void drawMovingTraffic(float pos) {
 
     glPushMatrix();
     glPushMatrix();
-    glTranslatef(-pos, 7.0f, 350.0f); 
+    glTranslatef(-pos+100, 7.0f, 330.0f); 
     glRotatef(180.0f, 0.0f, 1.0f, 0.0f); 
     glScalef(15.0f, 15.0f, 15.0f); 
     myShowroom.showcaseCar.draw();
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(-pos + 100.0f, 7.0f, 350.0f);
+    glTranslatef(-pos + 400, 0.0f, 330.0f);
+    glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(5.5f, 5.5f, 5.5f);
+    myShowroom.myCar.Draw();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-pos , 7.0f, 300.0f);
     glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
     glScalef(15.0f, 15.0f, 15.0f);
     myShowroom.showcaseCar.draw();
@@ -674,6 +687,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         if (wParam == '1')
             myShowroom.isGlassDoorOpen = !myShowroom.isGlassDoorOpen;
 
+        if (wParam == 'C') {
+            myShowroom.isCarDoorOpening = !myShowroom.isCarDoorOpening;
+        }
+        if (wParam == '2') {
+            myShowroom.isCarDoorroom1 = !myShowroom.isCarDoorroom1;
+        }
         if (wParam == 'U') {
             doorAngle += 2.0f;
             if (doorAngle > 90.0f) doorAngle = 90.0f;
