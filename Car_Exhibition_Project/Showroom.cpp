@@ -5,6 +5,7 @@
 #include "CornerArea.h"
 #include "CurbConnector.h"
 extern Cybertruck myCyber;
+extern Model_3DS* palm;
 Showroom::Showroom(float w, float h, float d) {
     width = w;
     height = h;
@@ -167,7 +168,7 @@ void Showroom::drawImprovedLeftWall() {
 void Showroom::drawProfessionalGlass() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glDepthMask(GL_FALSE);
     float panelW = 25.0f;
     int numPanels = (int)(width / panelW);
 
@@ -180,7 +181,7 @@ void Showroom::drawProfessionalGlass() {
     }
 
     drawBox(width / 2.0f - 0.5f, 0, 0, 0.1f, height, depth - 1.0f, 0.1f, 0.15f, 0.2f, 0.3f);
-
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 }
 
@@ -373,7 +374,64 @@ void Showroom::render(Cybertruck& car) {
 
    
     drawPlatform(width * 0.25f, -depth * 0.25f, 0, 0, 1);
-    drawPlatform(width * 0.25f, depth * 0.25f, 1, 1, 0.5f);
+   
+   glPushMatrix();
+    glTranslatef(width * 0.25f, 1.0f, depth * 0.25f);
+
+    glPushMatrix();
+    glRotatef(-45.0f, 0.0f, 1.0f, 0.0f);
+        glScalef(5.5f, 5.5f, 5.5f);
+        myCar.Draw(); 
+    glPopMatrix();
+    if (palm != NULL) {
+        glEnable(GL_TEXTURE_2D);
+        glPushMatrix();
+        glTranslatef(20.0f, 0.0f, 20.0f); 
+        glScalef(0.4f, 1.5f, 0.4f);
+        palm->Draw();
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(20.0f, 0.0f, -20.0f); 
+        glScalef(0.4f, 1.5f, 0.4f);
+        palm->Draw();
+        glPopMatrix();
+    }
+    if (myRoom != nullptr) {
+        glPushMatrix();
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDepthMask(GL_FALSE); 
+
+            glTranslatef(10.0, 0.0, 0.0);
+            glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+            glScalef(1.5f, 4.0f, 2.3f);
+
+            myRoom->Draw();
+            glDepthMask(GL_TRUE);
+            glDisable(GL_BLEND);
+        glPopMatrix();
+    }
+     glPopMatrix();
+    
+    if (palm != NULL) {
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+       
+        glPushMatrix();
+        glTranslatef(-width / 2.5f-20, 0.0f, -depth / 2.5f);
+        glScalef(0.6f, 1.5f, 0.6f);
+        palm->Draw();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslatef(-width /9.0f+30, 0.0f, -depth / 2.5f);
+        glScalef(0.6f, 1.5f, 0.6f);
+        palm->Draw();
+        glPopMatrix();
+
+    }
 
     drawImprovedLeftWall();
 
@@ -385,11 +443,11 @@ void Showroom::render(Cybertruck& car) {
     drawCarDisplaySection(-width * 0.15f, depth * 0.30f);
    
  
-    float roomX = (width / 4) + 5.0f;   // موقع الغرفة على محور X
-    float roomZ = -depth / 4 + 2.0f;    // موقع الغرفة على محور Z
-    float roomW = (width / 2) - 15.0f;        // عرض الغرفة
-    float roomD = 93.0f;        // عمق الغرفة
-    float roomH = 55.0f;        // ارتفاع الغرفة
+    float roomX = (width / 4) + 5.0f;   
+    float roomZ = -depth / 4 + 2.0f;    
+    float roomW = (width / 2) - 15.0f;       
+    float roomD = 93.0f;      
+    float roomH = 55.0f;      
     drawFamilyGlassRoom(roomX, roomZ, roomW, roomD, roomH);
 
 
@@ -967,7 +1025,8 @@ void Showroom::drawCarDisplaySection(float x, float z) {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(0.8f, 0.9f, 1.0f, 0.25f); 
+    glDepthMask(GL_FALSE);
+    glColor4f(0.8f, 0.9f, 1.0f, 0.3f); 
     glBegin(GL_QUADS);
     glVertex3f(-roomW / 2, 0, -roomD / 2);
     glVertex3f(roomW / 2, 0, -roomD / 2);
@@ -978,13 +1037,9 @@ void Showroom::drawCarDisplaySection(float x, float z) {
     glVertex3f(roomW / 2, roomH, roomD / 2);
     glVertex3f(roomW / 2, roomH, -roomD / 2);
     glEnd();
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 
     glPopMatrix();
-    //    /*if (tableModel) {
-//        glPushMatrix();
-//        glTranslatef(x + 15.0f, 0.0f, z);
-//        tableModel->Draw();
-//        glPopMatrix();
-//    }*/
+       
 }

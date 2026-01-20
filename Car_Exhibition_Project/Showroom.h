@@ -11,6 +11,8 @@
 #include "Cybertruck.h"
 #include "CarModel.h"
 #include "Model_3DS.h"
+#include "CarMain.h"
+#include "RoomMain.h"
 
 class Showroom {
 private:
@@ -29,9 +31,10 @@ private:
 
  
 public:
+    CarMain myCar;
+    RoomMain* myRoom;
     CarModel showcaseCar;
     void drawCarDisplaySection(float x, float z);
-    void drawTableAndChairs(float x, float z);
     Model_3DS* tableModel;
     float doorPos;    
     float doorAlpha;
@@ -43,6 +46,7 @@ public:
     int asphaltTexture;
     int floorTex;
     int  wallTex;
+    int  wallH;
     int  wallTex1,img1;
     int ceilingTex;
     void drawFloorTexture(int floorTexID);
@@ -59,7 +63,6 @@ public:
     GLuint wallBackTex;
     void drawBox(float x, float y, float z, float w, float h, float d, float r, float g, float b, float a = 1.0f);
     Showroom(float w = 400.0f, float h = 60.0f, float d = 200.0f);
-
     void update(float camX, float camZ); 
     void render(Cybertruck& car);
     void setNightMode(bool night) { isNightMode = night; }

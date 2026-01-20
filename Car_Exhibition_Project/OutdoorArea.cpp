@@ -204,4 +204,22 @@ void OutdoorArea::drawParkedCars(Showroom* s) {
 
         colorIdx++;
     }
+   
+    float safetyMargin = 45.0f;
+    float frontZ = depth / 2.0f - 30.0f; 
+
+    for (float i = -width / 2.0f + safetyMargin; i <= width / 2.0f - safetyMargin; i += spacing) {
+        if (abs(i) > 40.0f) {
+            glPushMatrix();
+
+            glTranslatef(i, 0.5f, frontZ);
+
+            glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
+            glScalef(4.5f, 4.5f, 4.5f);
+
+            s->myCar.Draw();
+
+            glPopMatrix();
+        }
+    }
 }

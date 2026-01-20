@@ -81,6 +81,12 @@
     <ClInclude Include="CarModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CarMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Car_Exhibition_Project.cpp">
@@ -126,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cybertruck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CarMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -306,6 +318,27 @@
     <Image Include="cha2.bmp">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="Arch41_007_bark.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Arch41_007_ground_2.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Arch41_007_wood.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="leaf.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="WallHadeel.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="floorHad.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Light.bmp">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tree1.3ds">
@@ -327,6 +360,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="fence.3ds">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Palm N280116.3DS">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

@@ -38,8 +38,18 @@ float showroomWidth = 400.0f, showroomHeight = 70.0f, showroomDepth = 200.0f, gl
 Model_3DS treeModel,plantModel,p1;
 ExternalEnvironment myEnv;
 Cybertruck myCyber;
+Model_3DS* palm;           
+GLTexture palmTex[4];       
+float carDoorAngle = 0.0f;  
+float doorAngle = 0.0f; 
+bool isInsideCar = false;
+float carSpeed = 0.0f;
+float carX = 0.0f, carZ = 180.0f;
+float carAngle = 0.0f;
+bool isDriving = false; 
 void InitScene();
 void RenderScene();
+void UpdatePhysics();
 
 void ApplyLighting();
 void Draw_Skybox(float width, float height, float length);
@@ -57,7 +67,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
     wc.lpszClassName = "CarExhibitionFinal";
     RegisterClass(&wc);
 
-    hWnd = CreateWindow("CarExhibitionFinal", "Modern Car Showroom 2025 - Movement Enabled",
+    hWnd = CreateWindow("CarExhibitionFinal", "Modern Car Showroom 2025 ",
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         50, 50, 1280, 720, NULL, NULL, hInstance, NULL);
 
@@ -77,6 +87,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
             DispatchMessage(&msg);
         }
         else {
+            UpdatePhysics();
             RenderScene();
             SwapBuffers(hDC);
         }
@@ -279,9 +290,27 @@ bool isLocationSafe(float x, float z) {
 
     return true; // إذا مر من كل الفحوصات، الموقع آمن
 }
+void UpdatePhysics() {
+    if (isDriving) {
+        float nextCarX = carX + sin(carAngle * 3.14159 / 180.0f) * carSpeed;
+        float nextCarZ = carZ + cos(carAngle * 3.14159 / 180.0f) * carSpeed;
 
+        if (isLocationSafe(nextCarX, nextCarZ)) {
+            carX = nextCarX;
+            carZ = nextCarZ;
+        }
+        else {
+            carSpeed = 0;
+        }
 
+        camX = carX;
+        camZ = carZ;
+        camY = 14.0f; 
+        camAngleY = carAngle - 180.0f;
 
+        carSpeed *= 0.98f; 
+    }
+}
 void DrawVegetation() {
     float treeX[] = { 350.0f, 390.0f, 430.0f };
 
@@ -367,6 +396,7 @@ void InitScene() {
     myShowroom.wallBackTex = LoadTexture((char*)"flag.bmp", 255);// ++++A
     myShowroom.floorTex = LoadTexture((char*)"floor2.bmp", 255);
     myShowroom.wallTex = LoadTexture((char*)"wallBlock.bmp", 255);
+    myShowroom.wallH = LoadTexture((char*)"wallHadeel.bmp", 255);
     myShowroom.wallTex1 = LoadTexture((char*)"frontOut.bmp", 255);
     myShowroom.carDoorTex = LoadTexture((char*)"ca1111.bmp", 255);
     myShowroom.staffDoorTex = LoadTexture((char*)"door1.bmp", 255);
@@ -384,6 +414,35 @@ void InitScene() {
     myShowroom.showcaseCar.texWheel = LoadTexture((char*)"carwheel.bmp", 255);
     myShowroom.showcaseCar.texRim = LoadTexture((char*)"rim.bmp", 255);
     myShowroom.showcaseCar.texNumber = LoadTexture((char*)"OIP.bmp", 255);
+    GLuint rFloor = LoadTexture((char*)"floorHad.bmp", 255);
+    GLuint rCeil = LoadTexture((char*)"Light.bmp", 255);
+   
+    palm = new Model_3DS();
+
+    if (palm != NULL)
+    {
+        glEnable(GL_TEXTURE_2D);
+        palm->Load((char*)"Palm N280116.3DS");
+
+        if (palm->totalFaces > 0)
+        {
+            palmTex[0].LoadBMP((char*)"leaf.bmp");
+            palmTex[1].LoadBMP((char*)"Arch41_007_bark.bmp");
+            palmTex[2].LoadBMP((char*)"Arch41_007_wood.bmp");
+            palmTex[3].LoadBMP((char*)"Arch41_007_ground_2.bmp");
+
+            for (int i = 0; i < palm->numMaterials; i++) {
+                palm->Materials[i].textured = true;
+                if (i == 0)      palm->Materials[i].tex = palmTex[0];
+                else if (i == 1) palm->Materials[i].tex = palmTex[1];
+                else if (i == 2) palm->Materials[i].tex = palmTex[2];
+                else             palm->Materials[i].tex = palmTex[3];
+            }
+        }
+        glDisable(GL_TEXTURE_2D);
+    }
+    myShowroom.myRoom = new RoomMain(rFloor, myShowroom.wallH, rCeil);
+    myShowroom.myRoom->buildFont(hDC);
     const char* faces[6] = {
         "right.bmp",
         "left.bmp",
@@ -409,7 +468,6 @@ void InitScene() {
     plantModel.Load((char*)"Plant 3.3ds");
    
     p1.Load((char*)"Car.3ds");
-    //plantModel.Load((char*)"fence.3ds");
     glDisable(GL_TEXTURE_2D);
    
 
@@ -471,18 +529,16 @@ void RenderScene() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
+  
     glRotatef(camAngleX, 1, 0, 0);
     glRotatef(camAngleY, 0, 1, 0);
     glTranslatef(-camX, -camY, -camZ);
     Draw_Skybox(4.0f, 4.0f, 4.0f);
-
     ApplyLighting();
     myEnv.render();
     myShowroom.setNightMode(isNight);
     myShowroom.update(camX, camZ);
     myShowroom.render(myCyber);
- 
     DrawVegetation();
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -495,67 +551,127 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     switch (message) {
     case WM_KEYDOWN:
     {
-        float nextX = camX;
-        float nextZ = camZ;
-        if (wParam == '1')//     ++++  A
+        float speed = 6.5f;
+        float rotationSpeed = 3.0f; 
+
+        if (wParam == VK_LEFT) {
+            camAngleY -= rotationSpeed;
+        }
+        else if (wParam == VK_RIGHT) {
+            camAngleY += rotationSpeed;
+        }
+        else if (wParam == VK_UP) {
+            camAngleX -= rotationSpeed;
+        }
+        else if (wParam == VK_DOWN) {
+            camAngleX += rotationSpeed;
+        }
+        float nextCamX = camX;
+        float nextCamZ = camZ;
+        float nextCarX = carX;
+        float nextCarZ = carZ;
+
+        if (wParam == 'P') {
+            isDriving = !isDriving;
+            if (isDriving) {
+                camAngleX = 10.0f;
+            }
+        }
+
+        if (isDriving) {
+            if (wParam == 'W') carSpeed += 1.8f; 
+            if (wParam == 'S') carSpeed -= 1.2f;  
+            if (wParam == 'A') carAngle += 5.0f;  
+            if (wParam == 'D') carAngle -= 5.0f; 
+            if (carSpeed > 5.0f) carSpeed = 5.0f;
+            if (carSpeed < -2.0f) carSpeed = -2.0f;
+            nextCarX += sin(carAngle * 3.14159 / 180) * carSpeed;
+            nextCarZ += cos(carAngle * 3.14159 / 180) * carSpeed;
+
+            if (isLocationSafe(nextCarX, nextCarZ)) {
+                carX = nextCarX;
+                carZ = nextCarZ;
+            }
+
+           
+            float forwardOffset = -1.0f; 
+            float seatHeight = 20.0f;
+
+            camX = carX + sin(carAngle * 3.14159 / 180) * forwardOffset;
+            camZ = carZ + cos(carAngle * 3.14159 / 180) * forwardOffset;
+            camY = seatHeight;
+
+            camAngleY = carAngle + 180;
+
+            camAngleX = 5.0f + (carSpeed * 0.2f);
+
+            carSpeed *= 0.94f;
+        }
+        else {
+            if (wParam == 'W') {
+                nextCamX += sin(camAngleY * 3.14 / 180) * speed;
+                nextCamZ -= cos(camAngleY * 3.14 / 180) * speed;
+            }
+            else if (wParam == 'S') {
+                nextCamX -= sin(camAngleY * 3.14 / 180) * speed;
+                nextCamZ += cos(camAngleY * 3.14 / 180) * speed;
+            }
+            else if (wParam == 'A') {
+                nextCamX -= cos(camAngleY * 3.14 / 180) * speed;
+                nextCamZ -= sin(camAngleY * 3.14 / 180) * speed;
+            }
+            else if (wParam == 'D') {
+                nextCamX += cos(camAngleY * 3.14 / 180) * speed;
+                nextCamZ += sin(camAngleY * 3.14 / 180) * speed;
+            }
+
+            if (isLocationSafe(nextCamX, nextCamZ)) {
+                camX = nextCamX;
+                camZ = nextCamZ;
+            }
+        }
+
+        if (wParam == '1')
             myShowroom.isGlassDoorOpen = !myShowroom.isGlassDoorOpen;
 
-        if (wParam == 'W') {
-            nextX += sin(camAngleY * 3.14 / 180) * speed;
-            nextZ -= cos(camAngleY * 3.14 / 180) * speed;
+        if (wParam == 'U') {
+            doorAngle += 2.0f;
+            if (doorAngle > 90.0f) doorAngle = 90.0f;
+            myShowroom.myRoom->setDoorAngle(doorAngle);
         }
-        else if (wParam == 'S') {
-            nextX -= sin(camAngleY * 3.14 / 180) * speed;
-            nextZ += cos(camAngleY * 3.14 / 180) * speed;
-        }
-        else if (wParam == 'A') {
-            nextX -= cos(camAngleY * 3.14 / 180) * speed;
-            nextZ -= sin(camAngleY * 3.14 / 180) * speed;
-        }
-        else if (wParam == 'D') {
-            nextX += cos(camAngleY * 3.14 / 180) * speed;
-            nextZ += sin(camAngleY * 3.14 / 180) * speed;
+        if (wParam == 'R') {
+            doorAngle -= 2.0f;
+            if (doorAngle < 0.0f) doorAngle = 0.0f;
+            myShowroom.myRoom->setDoorAngle(doorAngle);
         }
 
+        if (wParam == 'F') {
+            carDoorAngle += 2.0f;
+            if (carDoorAngle > 75.0f) carDoorAngle = 75.0f;
+            myShowroom.myCar.setDoorAngle(carDoorAngle);
+        }
+        if (wParam == 'G') {
+            carDoorAngle -= 2.0f;
+            if (carDoorAngle < 0.0f) carDoorAngle = 0.0f;
+            myShowroom.myCar.setDoorAngle(carDoorAngle);
+        }
 
-        if (isLocationSafe(nextX, nextZ)) {
-            camX = nextX;
-            camZ = nextZ;
-        }
-        if (wParam == 'Q') {
-            if (camY < (showroomHeight - 7.0f)) {
-                camY += speed;
-            }
-        }
-        if (wParam == 'E') {
+        if (wParam == 'Q') { if (camY < (showroomHeight - 7.0f)) camY += speed; }
+        if (wParam == 'E') { if (camY > 5.0f) camY -= speed; }
 
-            if (camY > 5.0f) {
-                camY -= speed;
-            }
-        }
         if (wParam == 'N') {
             isNight = !isNight;
             myShowroom.setNightMode(isNight);
         }
-        if (wParam == 'C') {
-            myShowroom.isCarDoorOpening = !myShowroom.isCarDoorOpening;
 
-        }
-        if (wParam == 'R') {
-            myShowroom.isCarDoorroom1 = !myShowroom.isCarDoorroom1;
-
-        }
         if (wParam == 'M') {
-            if (MySound.IsPlaying()) {
-                MySound.Stop();
-            }
-            else {
-                MySound.Play(true);
-            }
+            if (MySound.IsPlaying()) MySound.Stop();
+            else MySound.Play(true);
         }
 
         InvalidateRect(hWnd, NULL, FALSE);
     }
+    break;
     break;
     case WM_LBUTTONDOWN:
         prevMouseX = LOWORD(lParam);
@@ -579,7 +695,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             InvalidateRect(hWnd, NULL, FALSE);
         }
         break;
-    case WM_DESTROY: PostQuitMessage(0); break;
+    case WM_DESTROY:
+        if (palm) {
+            delete palm;
+            palm = NULL;
+        }
+        PostQuitMessage(0); break;
     default: return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;

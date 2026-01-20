@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="CarMain.h" />
     <ClInclude Include="CarModel.h" />
     <ClInclude Include="Car_Exhibition_Project.h" />
     <ClInclude Include="CornerArea.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="OutdoorArea.h" />
     <ClInclude Include="RedPortal.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RoomMain.h" />
     <ClInclude Include="Showroom.h" />
     <ClInclude Include="ShowroomManager.h" />
     <ClInclude Include="Sound.h" />
@@ -151,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="CarMain.cpp" />
     <ClCompile Include="Car_Exhibition_Project.cpp" />
     <ClCompile Include="CornerArea.cpp" />
     <ClCompile Include="CurbConnector.cpp" />
@@ -158,6 +161,7 @@
     <ClCompile Include="FrontArea.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
     <ClCompile Include="OutdoorArea.cpp" />
+    <ClCompile Include="RoomMain.cpp" />
     <ClCompile Include="Showroom.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StdAfx.cpp" />
@@ -169,6 +173,9 @@
     <ResourceCompile Include="Car_Exhibition_Project.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Arch41_007_bark.bmp" />
+    <Image Include="Arch41_007_ground_2.bmp" />
+    <Image Include="Arch41_007_wood.bmp" />
     <Image Include="back.bmp" />
     <Image Include="bark_loo.bmp" />
     <Image Include="blatt1.bmp" />
@@ -189,11 +196,14 @@
     <Image Include="flo1.bmp" />
     <Image Include="floor1.bmp" />
     <Image Include="floor2.bmp" />
+    <Image Include="floorHad.bmp" />
     <Image Include="front.bmp" />
     <Image Include="frontOut.bmp" />
     <Image Include="gress.bmp" />
     <Image Include="KS2.bmp" />
+    <Image Include="leaf.bmp" />
     <Image Include="left.bmp" />
+    <Image Include="Light.bmp" />
     <Image Include="mpm_vol.09_p22_ground_bump.bmp" />
     <Image Include="mpm_vol.09_p22_ground_diff.bmp" />
     <Image Include="mpm_vol.09_p22_leaf_1_diff.bmp" />
@@ -226,6 +236,7 @@
     <Image Include="top.bmp" />
     <Image Include="wall.bmp" />
     <Image Include="wallBlock.bmp" />
+    <Image Include="WallHadeel.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Cactus.3ds" />
@@ -233,6 +244,7 @@
     <None Include="chair.3ds" />
     <None Include="desk.3DS" />
     <None Include="fence.3ds" />
+    <None Include="Palm N280116.3DS" />
     <None Include="Plant 3.3ds" />
     <None Include="Tree1.3ds" />
   </ItemGroup>
