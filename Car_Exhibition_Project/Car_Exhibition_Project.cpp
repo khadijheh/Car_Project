@@ -50,7 +50,8 @@ bool isDriving = false;
 void InitScene();
 void RenderScene();
 void UpdatePhysics();
-
+float trafficCarPos = 0.0f;
+float trafficSpeed = 2.0f;
 void ApplyLighting();
 void Draw_Skybox(float width, float height, float length);
 bool LoadSkybox(GLuint texArray[6], const char* faces[6]);
@@ -274,9 +275,9 @@ bool isLocationSafe(float x, float z) {
 
     // --- ج. فحص المنصات الداخلية (تعديل الـ 0.25) ---
     // تُرسم المنصات عند ربع العرض والعمق، وحجمها 20x20
-    float pX = showroomWidth * 0.25f;
+    float pX = showroomWidth * 0.25f; 
     float pZ = showroomDepth * 0.25f;
-    float pSize = 20.0f;
+    float pSize = 25.0f;
 
     if (checkCollision(x, z, -pX, -pZ, pSize, pSize)) return false; // منصة 1
     if (checkCollision(x, z, pX, -pZ, pSize, pSize)) return false; // منصة 2
@@ -284,13 +285,16 @@ bool isLocationSafe(float x, float z) {
     if (checkCollision(x, z, pX, pZ, pSize, pSize)) return false; // منصة 4
 
 
-    // --- د. فحص المباني الخارجية (البيئة المحيطة) ---
 
 
-
-    return true; // إذا مر من كل الفحوصات، الموقع آمن
+    return true; 
 }
 void UpdatePhysics() {
+    trafficCarPos += trafficSpeed;
+    if (trafficCarPos > 1000.0f) { 
+        trafficCarPos = -1000.0f;
+    }
+    //myShowroom.showcaseCar.wheelRotation -= 5.0f;
     if (isDriving) {
         float nextCarX = carX + sin(carAngle * 3.14159 / 180.0f) * carSpeed;
         float nextCarZ = carZ + cos(carAngle * 3.14159 / 180.0f) * carSpeed;
@@ -310,6 +314,42 @@ void UpdatePhysics() {
 
         carSpeed *= 0.98f; 
     }
+}
+void drawMovingTraffic(float pos) {
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glPushMatrix();
+    glPushMatrix();
+    glTranslatef(pos, 0.0f, 350.0f);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(5.5f, 5.5f, 5.5f);
+    myShowroom.myCar.Draw(); 
+    glPopMatrix();
+    glPushMatrix();
+    glTranslatef(pos +200.0f, 0.0f, 380.0f);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(5.5f, 5.5f, 5.5f);
+    myShowroom.myCar.Draw();
+    glPopMatrix();
+    glPopMatrix();
+
+    glPushMatrix();
+    glPushMatrix();
+    glTranslatef(-pos, 7.0f, 350.0f); 
+    glRotatef(180.0f, 0.0f, 1.0f, 0.0f); 
+    glScalef(15.0f, 15.0f, 15.0f); 
+    myShowroom.showcaseCar.draw();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-pos + 100.0f, 7.0f, 350.0f);
+    glRotatef(180.0f, 0.0f, 1.0f, 0.0f);
+    glScalef(15.0f, 15.0f, 15.0f);
+    myShowroom.showcaseCar.draw();
+    glPopMatrix();
+    glPopMatrix();
 }
 void DrawVegetation() {
     float treeX[] = { 350.0f, 390.0f, 430.0f };
@@ -529,12 +569,12 @@ void RenderScene() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-  
     glRotatef(camAngleX, 1, 0, 0);
     glRotatef(camAngleY, 0, 1, 0);
     glTranslatef(-camX, -camY, -camZ);
     Draw_Skybox(4.0f, 4.0f, 4.0f);
     ApplyLighting();
+    drawMovingTraffic(trafficCarPos);
     myEnv.render();
     myShowroom.setNightMode(isNight);
     myShowroom.update(camX, camZ);
