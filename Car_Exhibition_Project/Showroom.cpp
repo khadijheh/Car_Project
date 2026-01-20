@@ -902,7 +902,7 @@ void Showroom::drawCarDisplaySection(float x, float z) {
     float roomW = width * 0.20f;
     float roomD = depth * 0.3f;
     float roomH = height - 10.0f;
-
+   
     glPushMatrix();
     glTranslatef(x, 0.0f, z);
 

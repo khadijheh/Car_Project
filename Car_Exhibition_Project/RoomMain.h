@@ -13,10 +13,10 @@ private:
     GLuint fontBase;
     GLuint floorTex, wallTex, ceilTex;
     float size, height;
-    float doorWidth, doorHeight, doorAngle;
+  
 
 public:
-    
+    float doorWidth, doorHeight, doorAngle;
     RoomMain(GLuint f, GLuint w, GLuint c);
     void buildFont(HDC hdc); 
     void printText(float x, float y, float z, const char* text);

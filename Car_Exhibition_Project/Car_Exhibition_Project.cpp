@@ -105,7 +105,7 @@ bool LoadSkybox(GLuint texArray[6], const char* faces[6]) {
     }
     return true;
 }
-void LoadTextureToSideArray(GLuint array[6], const char* filename) {
+ static void LoadTextureToSideArray(GLuint array[6], const char* filename) {
     GLuint tex = LoadTexture((char*)filename, 255);
     for (int i = 0; i < 6; i++) {
         array[i] = tex;
@@ -201,101 +201,215 @@ void Draw_Skybox(float width, float height, float length)
     glPopMatrix();
     glPopAttrib();
 }
-bool checkCollision(float px, float pz, float boxX, float boxZ, float width, float depth) {
-    float minX = boxX - (width / 2.0f) - 2.0f; // أضفنا 2.0 كفراغ أمان للكاميرا
+static bool checkCollision(float px, float pz, float boxX, float boxZ, float width, float depth) {
+    float minX = boxX - (width / 2.0f) - 2.0f; 
     float maxX = boxX + (width / 2.0f) + 2.0f;
     float minZ = boxZ - (depth / 2.0f) - 2.0f;
     float maxZ = boxZ + (depth / 2.0f) + 2.0f;
-
-    // إذا كانت الكاميرا داخل هذه الحدود، هناك تصادم
     if (px >= minX && px <= maxX && pz >= minZ && pz <= maxZ) {
         return true;
     }
     return false;
 }
-bool isLocationSafe(float x, float z) {
+static bool isLocationSafe(float x, float z) {
     if (myEnv.isLocationBlocked(x, z)) return false;
-    // 1. حساب الأبعاد الحالية بناءً على متغيرات الحجم العامة
+
     float halfW = showroomWidth / 2.0f;
     float halfD = showroomDepth / 2.0f;
 
-    // مسافة أمان (Buffer) لمنع الكاميرا من الالتصاق التام بالأسطح
     float buffer = 3.0f;
 
-    // --- أ. فحص جدران المعرض الأساسية ---
-
-    // الجدار الأمامي (الزجاج والبوابة الحمراء)
     if (z > (glassZPos - buffer) && z < (glassZPos + buffer) && x > -halfW && x < halfW) {
-        // فحص إذا كان اللاعب في منطقة البوابة (بين -30 و 30) وهل هي مفتوحة كفاية
         bool inFrontPortal = (x > -30.0f && x < 30.0f);
         if (!inFrontPortal || (inFrontPortal && myShowroom.portalAngle < 45.0f)) {
             return false;
         }
     }
 
-    // الجدار الخلفي الأساسي (عند Z = -halfD)
     if (z < (-halfD + buffer) && z >(-halfD - buffer) && x > -halfW && x < halfW) {
         return false;
     }
 
-    // الجدار الأيمن (عند X = halfW)
     if (x > (halfW - buffer) && x < (halfW + buffer) && z > -halfD && z < halfD) {
         return false;
     }
-
-    // الجدار الأيسر (عند X = -halfW) مع فحص الأبواب (باب السيارة وباب الموظفين)
+    float treeRadius = 4.5f;
+    if (checkCollision(x, z, (showroomWidth * 0.25f) + 20.0f, (showroomDepth * 0.25f) + 20.0f, treeRadius, treeRadius)) return false;
+    if (checkCollision(x, z, (showroomWidth * 0.25f) + 20.0f, (showroomDepth * 0.25f) - 20.0f, treeRadius, treeRadius)) return false;
+    if (checkCollision(x, z, -showroomWidth / 2.5f - 20, -showroomDepth / 2.5f, treeRadius, treeRadius)) return false;
+    if (checkCollision(x, z, -showroomWidth / 9.0f + 30, -showroomDepth / 2.5f, treeRadius, treeRadius)) return false;
     if (x < (-halfW + buffer) && x >(-halfW - buffer) && z > -halfD && z < halfD) {
         bool inCarDoor = (z > 51.0f && z < 79.0f);
         bool inStairDoor = (z > 85.5f && z < 94.5f);
 
-        // إذا كان الباب مغلقاً في منطقته -> تصادم
         if (inCarDoor && myShowroom.carDoorAngle < 5.0f) return false;
         if (inStairDoor && myShowroom.personDoorOpenAngle < 45.0f) return false;
-
-        // إذا لم يكن هناك باب أصلاً (منطقة الجدار المصمت)
         if (!inCarDoor && !inStairDoor) return false;
     }
 
-
-    // --- ب. فحص الجدران الإضافية (التي أضفتها في render) ---
-
-    // الجدار الخلفي الثاني (backWall)
-    // الإحداثيات من الكود: x = -width/6, z = -depth/9, width = width/8, thickness = 3.0f
     float bWallX = -showroomWidth / 6.0f;
     float bWallZ = -showroomDepth / 9.0f;
     float bWallW = (float)((int)(showroomWidth / 8));
     if (checkCollision(x, z, bWallX, bWallZ, bWallW, 3.0f)) return false;
 
-    // الجدار الخلفي الأول (backWall1)
-    // الإحداثيات: x = -width/2+5, z = -depth/2, width = width/8, thickness = 8.0f
     float bWall1X = -showroomWidth / 2.0f + 5.0f;
     float bWall1Z = -showroomDepth / 2.0f;
     float bWall1W = (float)((int)(showroomWidth / 8));
     if (checkCollision(x, z, bWall1X, bWall1Z, bWall1W, 8.0f)) return false;
+  
+    float famW = (showroomWidth / 2.0f) - 15.0f;
+    float famD = 93.0f;
+    float famCenterX = (showroomWidth / 4.0f) + 5.0f;
+    float famCenterZ = (-showroomDepth / 4.0f) + 2.0f;
+
+    if (checkCollision(x, z, famCenterX, famCenterZ, famW, famD)) {
+
+        bool isOpen = (myShowroom.isGlassDoorOpen && myShowroom.glassDoorHeight >= 15.0f);
+        bool inDoorWayX = (x > (famCenterX - 80.0f) && x < (famCenterX + 80.0f));
+
+        if (isOpen && inDoorWayX) {
+        }
+        else {
+            return false;
+        }
+    }
 
 
-    // --- ج. فحص المنصات الداخلية (تعديل الـ 0.25) ---
-    // تُرسم المنصات عند ربع العرض والعمق، وحجمها 20x20
-    float pX = showroomWidth * 0.25f; 
-    float pZ = showroomDepth * 0.25f;
-    float pSize = 25.0f;
+    float advW = (showroomWidth / 2.0f) - 15.0f;
+    float advD = 95.0f;
+    float advX = (-showroomWidth / 2.0f) + (advW / 2.0f) + 5.0f;
 
-    if (checkCollision(x, z, -pX, -pZ, pSize, pSize)) return false; // منصة 1
-    if (checkCollision(x, z, pX, -pZ, pSize, pSize)) return false; // منصة 2
-    if (checkCollision(x, z, -pX, pZ, pSize, pSize)) return false; // منصة 3
-    if (checkCollision(x, z, pX, pZ, pSize, pSize)) return false; // منصة 4
+    if (checkCollision(x, z, advX, -showroomDepth * 0.25f, advW, advD)) {
+      
+        if (!myShowroom.isCarDoorroom1 || myShowroom.doorAlpha > 0.5f) {
+            return false;
+        }
+    }
+    float dsX = -showroomWidth * 0.15f;
+    float dsZ = showroomDepth * 0.30f;
+    float dsW = showroomWidth * 0.20f;
+    float dsD = showroomDepth * 0.30f;
+    float dsBuffer = 2.5f;
+    if (checkCollision(x, z, dsX, dsZ, dsW, dsD)) {
+        float backGlassZ = dsZ - (dsD / 2.0f);
+        if (z < (backGlassZ + dsBuffer)) return false;
+
+        float rightGlassX = dsX + (dsW / 2.0f);
+        if (x > (rightGlassX - dsBuffer)) return false;
+
+        float carCollisionSize = 15.0f;
+        if (checkCollision(x, z, dsX, dsZ, carCollisionSize, carCollisionSize)) return false;
+    }
+
+   
+    float platX = showroomWidth * 0.25f;
+    float platZ = showroomDepth * 0.25f;
+
+    if (checkCollision(x, z, platX, platZ, 25.0f, 25.0f)) return false;
+
+  
+    float rmCenterX = platX + 10.0f;
+    float rmCenterZ = platZ;
+
+    float rmHalfW = 25.0f * 2.3f;  
+    float rmHalfD = 25.0f * 1.5f;  
+    float rmBuffer = 4.0f;
+
+    if (checkCollision(x, z, rmCenterX, rmCenterZ, rmHalfW * 2, rmHalfD * 2)) {
+
+        float doorWallX = rmCenterX + rmHalfW;
+
+        if (x > (doorWallX - rmBuffer)) {
+            bool inDoorWayZ = (z > (rmCenterZ - 11.0f) && z < (rmCenterZ + 18.0f));
+
+            if (inDoorWayZ && myShowroom.myRoom->doorAngle > 45.0f) {
+            }
+            else {
+                return false; 
+            }
+        }
+        else {
+            if (x < (rmCenterX - rmHalfW + 2.0f)) return false; 
+            if (z > (rmCenterZ + rmHalfD - 2.0f)) return false; 
+            if (z < (rmCenterZ - rmHalfD + 2.0f)) return false; 
+        }
+    }
+    float treeXPos[] = { 350.0f, 390.0f, 430.0f };
+    for (int i = 0; i < 3; i++) { 
+        if (checkCollision(x, z, treeXPos[i], 220.0f, 15.0f, 15.0f)) return false;
+    }
 
 
+    float plantXPos[] = { -150.0f, -210.0f };
+    for (int i = 0; i < 2; i++) {
+        if (checkCollision(x, z, plantXPos[i], 130.0f, 8.0f, 8.0f)) return false;
+    }
 
+    
+    float p1XPos[] = { -90.0f, -120.0f, 90.0f, 120.0f };
+    for (int i = 0; i < 4; i++) {
+        if (checkCollision(x, z, p1XPos[i], 130.0f, 20.0f, 20.0f)) return false;
+    }
+    float parkingSpacing = 30.0f;
+    float parkingLineL = 35.0f;
+    float parkingFrontDepth = 150.0f;
+    for (float i = -showroomWidth / 2.0f + 40.0f; i <= showroomWidth / 2.0f - 40.0f; i += parkingSpacing) {
+        if (abs(i) < 30.0f) continue;
 
-    return true; 
+        float globalCarX = i;
+        float globalCarZ = glassZPos + (parkingFrontDepth - (parkingLineL / 2.0f) - 4.0f);
+        float globalStopperZ = glassZPos + (parkingFrontDepth - 6.0f);
+
+        if (checkCollision(x, z, globalCarX, globalCarZ, 20.0f, 22.0f)) return false; 
+        if (checkCollision(x, z, i, globalStopperZ, 10.0f, 2.0f)) return false;      
+    }
+    float gWidth = 200.0f;
+    float gDepth = showroomDepth;
+    float gXOffset = (showroomWidth / 2.0f) + (gWidth / 2.0f);
+
+    float carSpacing = 30.0f;
+    for (float j = -gDepth / 2.0f + 45.0f; j <= gDepth / 2.0f - 45.0f; j += carSpacing) {
+        float localX = (gWidth / 2.0f) - 25.0f;
+        float globalX = gXOffset + localX;
+        float globalZ = j;
+
+        if (checkCollision(x, z, globalX, globalZ, 12.0f, 18.0f)) {
+            return false;
+        }
+    }
+
+    float safetyMargin = 45.0f;
+    float localFrontZ = gDepth / 2.0f - 30.0f;
+    float globalFrontZ = localFrontZ; 
+
+    for (float i = -gWidth / 2.0f + safetyMargin; i <= gWidth / 2.0f - safetyMargin; i += carSpacing) {
+        if (abs(i) > 40.0f) {
+            float globalX = gXOffset + i;
+            if (checkCollision(x, z, globalX, globalFrontZ, 15.0f, 12.0f)) {
+                return false;
+            }
+        }
+    }
+
+    float bStartX = -gWidth / 2.0f + 10.0f;
+    float bEndX = gWidth / 2.0f - 10.0f;
+    float globalBollardZ = gDepth / 2.0f + 5.0f;
+
+    for (float i = bStartX; i <= bEndX; i += 15.0f) {
+        if (abs(i) < 25.0f) continue;
+        float globalBollardX = gXOffset + i;
+        if (checkCollision(x, z, globalBollardX, globalBollardZ, 2.0f, 2.0f)) {
+            return false;
+        }
+    }
+    return true;
 }
 void UpdatePhysics() {
     trafficCarPos += trafficSpeed;
     if (trafficCarPos > 900.0f) { 
         trafficCarPos = -900.0f;
     }
-    //myShowroom.showcaseCar.wheelRotation -= 5.0f;
+    //myShowroom.showcaseCar.wheelRotation -= 2.0f;
     if (isDriving) {
         float nextCarX = carX + sin(carAngle * 3.14159 / 180.0f) * carSpeed;
         float nextCarZ = carZ + cos(carAngle * 3.14159 / 180.0f) * carSpeed;
@@ -317,7 +431,7 @@ void UpdatePhysics() {
     }
 }
 
-void drawMovingTraffic(float pos) {
+static void drawMovingTraffic(float pos) {
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
     glColor3f(1.0f, 1.0f, 1.0f);
@@ -366,7 +480,7 @@ void drawMovingTraffic(float pos) {
     glPopMatrix();
     glPopMatrix();
 }
-void DrawVegetation() {
+ static void DrawVegetation() {
     float treeX[] = { 350.0f, 390.0f, 430.0f };
 
     for (int i = 0; i < 2; i++) {
@@ -595,7 +709,7 @@ void RenderScene() {
     myShowroom.update(camX, camZ);
     myShowroom.render(myCyber);
     glPushMatrix();
-    glTranslatef(carX, 0.5f, carZ);
+    glTranslatef(carX, -0.8f, carZ);
     glRotatef(carAngle, 0.0f, 1.0f, 0.0f);
     glScalef(4.5f, 4.5f, 4.5f); 
 
@@ -635,8 +749,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
         if (wParam == 'P') {
             isDriving = !isDriving;
-            if (isDriving) {
+            /*if (isDriving) {
                 camAngleX = 10.0f;
+            }*/
+            if (!isDriving) {
+                carSpeed = 0.0f;
             }
         }
 
