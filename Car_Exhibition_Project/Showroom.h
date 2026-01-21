@@ -33,6 +33,8 @@ private:
 
  
 public:
+    float gardenOffsetX;
+    float gardenOffsetZ;
     CarMain myCar;
     CarLana carLana;
     Room* room;

@@ -367,6 +367,8 @@ void Showroom::render(Cybertruck& car) {
 
     float gardenX = (width / 2.0f) + (gardenWidth / 2.0f);
     OutdoorArea garden(gardenX, 0, 0, gardenWidth, depth);
+    garden.carOffsetZ = this->gardenOffsetZ; 
+    garden.carOffsetX = this->gardenOffsetX;
     garden.draw(this, isNightMode);
     
     FrontArea front(0, 0, glassZPos, width, frontDepth);

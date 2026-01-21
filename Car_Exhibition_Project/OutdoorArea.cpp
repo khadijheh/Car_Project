@@ -212,7 +212,7 @@ void OutdoorArea::drawParkedCars(Showroom* s) {
         if (abs(i) > 40.0f) {
             glPushMatrix();
 
-            glTranslatef(i, 0.5f, frontZ);
+            glTranslatef(i+carOffsetX, 0.5f, frontZ+carOffsetZ);
 
             glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
             glScalef(4.5f, 4.5f, 4.5f);

@@ -39,7 +39,7 @@ Model_3DS treeModel,plantModel,p1;
 ExternalEnvironment myEnv;
 Cybertruck myCyber;
 Model_3DS* palm;           
-GLTexture palmTex[4];       
+GLTexture palmTex[4]; 
 float carDoorAngle = 0.0f;  
 float doorAngle = 0.0f; 
 float doorAngleL = 0.0f;
@@ -812,6 +812,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             if (carSpeed < -2.0f) carSpeed = -2.0f;
         }
         else {
+            if (wParam == 'I') {
+                myShowroom.gardenOffsetZ -= 2.0f;
+            }
+            if (wParam == 'K') {
+                myShowroom.gardenOffsetZ += 2.0f;
+            }
+            if (wParam == 'L') {
+                myShowroom.gardenOffsetX += 2.0f;
+            }
+            if (wParam == 'J') {
+                myShowroom.gardenOffsetX -= 2.0f;
+            }
             if (wParam == 'W') {
                 nextCamX += sin(camAngleY * 3.14 / 180) * speed;
                 nextCamZ -= cos(camAngleY * 3.14 / 180) * speed;

@@ -20,6 +20,8 @@ private:
     void drawSecurityBollards(Showroom* s); 
 
 public:
+    float carOffsetZ = 0.0f; // متغير لتخزين حركة السيارات للأمام والخلف
+    float carOffsetX = 0.0f;
     OutdoorArea(float _x, float _y, float _z, float _w, float _d);
     void draw(Showroom* showroom, bool isNight);
 };
