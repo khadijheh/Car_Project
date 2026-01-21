@@ -447,6 +447,7 @@ void UpdatePhysics() {
         myShowroom.carLana.platformRotation -= 360.0f;
     myShowroom.showcaseCar.wheelRotation -= 2.0f;
     if (isDriving) {
+        float angleRad = carAngle * 3.14159f / 180.0f;
         float nextCarX = carX + sin(carAngle * 3.14159 / 180.0f) * carSpeed;
         float nextCarZ = carZ + cos(carAngle * 3.14159 / 180.0f) * carSpeed;
 
@@ -458,12 +459,18 @@ void UpdatePhysics() {
             carSpeed = 0;
         }
 
-        camX = carX;
-        camZ = carZ;
-        camY = 14.0f; 
-        camAngleY = carAngle - 180.0f;
+        float distBehind = -1.0f;
+        float heightAbove = 15.0f; 
 
-        carSpeed *= 0.96;
+        camX = carX - sin(angleRad) * distBehind;
+        camZ = carZ - cos(angleRad) * distBehind;
+        camY = heightAbove;
+
+      
+        camAngleY = carAngle - 180.0f;
+        camAngleX = 15.0f;
+
+        carSpeed *= 0.96f;
     }
 }
 
@@ -624,27 +631,22 @@ void InitScene() {
    
     palm = new Model_3DS();
 
-    if (palm != NULL)
-    {
-        glEnable(GL_TEXTURE_2D);
-        palm->Load((char*)"Palm N280116.3DS");
+    palm->Load((char*)"Palm N280116.3DS");
 
-        if (palm->totalFaces > 0)
-        {
-            palmTex[0].LoadBMP((char*)"leaf.bmp");
-            palmTex[1].LoadBMP((char*)"Arch41_007_bark.bmp");
-            palmTex[2].LoadBMP((char*)"Arch41_007_wood.bmp");
-            palmTex[3].LoadBMP((char*)"Arch41_007_ground_2.bmp");
+    GLTexture leaf, bark, wood, ground;
+    leaf.LoadBMP((char*)"leaf.bmp");
+    bark.LoadBMP((char*)"Arch41_007_bark.bmp");
+    wood.LoadBMP((char*)"Arch41_007_wood.bmp");
+    ground.LoadBMP((char*)"Arch41_007_ground_2.bmp");
 
-            for (int i = 0; i < palm->numMaterials; i++) {
-                palm->Materials[i].textured = true;
-                if (i == 0)      palm->Materials[i].tex = palmTex[0];
-                else if (i == 1) palm->Materials[i].tex = palmTex[1];
-                else if (i == 2) palm->Materials[i].tex = palmTex[2];
-                else             palm->Materials[i].tex = palmTex[3];
-            }
-        }
-        glDisable(GL_TEXTURE_2D);
+   for (int i = 0; i < palm->numMaterials; i++) {
+        palm->Materials[i].textured = true; 
+
+       
+        if (i == 0) palm->Materials[i].tex = leaf;
+        else if (i == 1) palm->Materials[i].tex = bark;
+        else if (i == 2) palm->Materials[i].tex = wood;
+        else palm->Materials[i].tex = ground;
     }
     myShowroom.myRoom = new RoomMain(rFloor, myShowroom.wallH, rCeil);
     myShowroom.room = new Room(rFloor, myShowroom.wallH, rCeil);
@@ -674,7 +676,6 @@ void InitScene() {
     plantModel.Load((char*)"Plant 3.3ds");
    
     p1.Load((char*)"Car.3ds");
-    glDisable(GL_TEXTURE_2D);
    
 
     glShadeModel(GL_SMOOTH);
@@ -797,9 +798,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         if (isDriving) {
             if (wParam == 'W') carSpeed += 0.5f; 
             if (wParam == 'S') carSpeed -= 0.5f;
-            if (wParam == 'A') carAngle += 3.0f;  
-            if (wParam == 'D') carAngle -= 3.0f;
+            if (abs(carSpeed) > 0.1f) {
+                float steeringSensitivity = 3.0f; 
 
+                if (wParam == 'A') {
+                    carAngle += (carSpeed > 0) ? steeringSensitivity : -steeringSensitivity;
+                }
+                if (wParam == 'D') {
+                    carAngle -= (carSpeed > 0) ? steeringSensitivity : -steeringSensitivity;
+                }
+            }
             if (carSpeed > 5.0f) carSpeed = 5.0f;
             if (carSpeed < -2.0f) carSpeed = -2.0f;
         }
