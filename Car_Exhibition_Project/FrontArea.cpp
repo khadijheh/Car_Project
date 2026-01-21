@@ -81,6 +81,9 @@ void FrontArea::drawParkingSlots(Showroom* s) {
         s->drawBox(i + 12.0f, yLine, frontZ, lineW, 0.05f, lineL, 1.0f, 1.0f, 1.0f, 0.9f);
 
         s->drawBox(i, yStopper, depth - 6.0f, 10.0f, 0.8f, 2.0f, 1.0f, 0.8f, 0.0f, 1.0f);
+        float currentRotation = s->showcaseCar.wheelRotation;
+
+        s->showcaseCar.wheelRotation = 0.0f;
         glPushMatrix();
         glTranslatef(i, 5.6f, depth - (lineL / 2.0f));
         glRotatef(-85.0f, 0, 1, 0);
@@ -90,6 +93,8 @@ void FrontArea::drawParkingSlots(Showroom* s) {
         s->showcaseCar.draw();
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
+
+        s->showcaseCar.wheelRotation = currentRotation;
     }
 }
 void FrontArea::drawGreenBelts(Showroom* s) {

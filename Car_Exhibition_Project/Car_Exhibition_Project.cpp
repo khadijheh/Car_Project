@@ -42,6 +42,7 @@ Model_3DS* palm;
 GLTexture palmTex[4];       
 float carDoorAngle = 0.0f;  
 float doorAngle = 0.0f; 
+float doorAngleL = 0.0f;
 bool isInsideCar = false;
 float carSpeed = 0.0f;
 //float carX = 0.0f, carZ = 180.0f;
@@ -402,6 +403,37 @@ static bool isLocationSafe(float x, float z) {
             return false;
         }
     }
+
+    float baseX = -showroomWidth * 0.25f;
+    float baseZ = showroomDepth * 0.25f;
+
+    float lanaCarX = baseX - 40.0f;
+    float lanaCarZ = baseZ + 20.0f;
+    if (checkCollision(x, z, lanaCarX, lanaCarZ, 15.0f, 15.0f)) return false;
+    if (checkCollision(x, z, baseX - 30.0f, baseZ - 15.0f, 5.0f, 5.0f)) return false;
+    if (checkCollision(x, z, baseX - 50.0f, baseZ - 15.0f, 5.0f, 5.0f)) return false;
+    float roomCenterX = baseX - 40.0f;
+    float roomCenterZ = baseZ + 10.0f;
+    float roomHalfW = (25.0f * 0.9f);
+    float roomHalfD = (25.0f * 1.2f);
+
+    
+    float wallThickness = 2.0f;
+
+    if (checkCollision(x, z, roomCenterX, roomCenterZ + roomHalfD, roomHalfW * 2, wallThickness)) return false;
+    if (checkCollision(x, z, roomCenterX - roomHalfW, roomCenterZ, wallThickness, roomHalfD * 2)) return false;
+    if (checkCollision(x, z, roomCenterX + roomHalfW, roomCenterZ, wallThickness, roomHalfD * 2)) return false;
+
+    float frontWallZ = roomCenterZ - roomHalfD;
+    if (checkCollision(x, z, roomCenterX, frontWallZ, roomHalfW * 2, wallThickness)) {
+        bool inDoorWayX = (x > (roomCenterX - 10.0f) && x < (roomCenterX + 10.0f));
+
+        if (inDoorWayX && myShowroom.room->doorAngle > 45.0f) {
+        }
+        else {
+            return false; 
+        }
+    }
     return true;
 }
 void UpdatePhysics() {
@@ -409,7 +441,11 @@ void UpdatePhysics() {
     if (trafficCarPos > 900.0f) { 
         trafficCarPos = -900.0f;
     }
-    //myShowroom.showcaseCar.wheelRotation -= 2.0f;
+
+    myShowroom.carLana.platformRotation += 0.5f; 
+    if (myShowroom.carLana.platformRotation >= 360.0f)
+        myShowroom.carLana.platformRotation -= 360.0f;
+    myShowroom.showcaseCar.wheelRotation -= 2.0f;
     if (isDriving) {
         float nextCarX = carX + sin(carAngle * 3.14159 / 180.0f) * carSpeed;
         float nextCarZ = carZ + cos(carAngle * 3.14159 / 180.0f) * carSpeed;
@@ -611,6 +647,7 @@ void InitScene() {
         glDisable(GL_TEXTURE_2D);
     }
     myShowroom.myRoom = new RoomMain(rFloor, myShowroom.wallH, rCeil);
+    myShowroom.room = new Room(rFloor, myShowroom.wallH, rCeil);
     myShowroom.myRoom->buildFont(hDC);
     const char* faces[6] = {
         "right.bmp",
@@ -809,6 +846,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             if (doorAngle < 0.0f) doorAngle = 0.0f;
             myShowroom.myRoom->setDoorAngle(doorAngle);
         }
+        if (wParam == 'Y') {
+            doorAngleL += 2.0f;
+            if (doorAngleL > 90.0f) doorAngleL = 90.0f;
+            myShowroom.room->setDoorAngle(doorAngleL);
+        }
+        if (wParam == 'T') {
+            doorAngleL -= 2.0f;
+            if (doorAngleL < 0.0f) doorAngleL = 0.0f;
+            myShowroom.room->setDoorAngle(doorAngleL);
+        }
 
         if (wParam == 'F') {
             carDoorAngle += 2.0f;
@@ -819,6 +866,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             carDoorAngle -= 2.0f;
             if (carDoorAngle < 0.0f) carDoorAngle = 0.0f;
             myShowroom.myCar.setDoorAngle(carDoorAngle);
+        }
+        if (wParam == 'O') {
+            carDoorAngle += 5.0f;
+            if (carDoorAngle > 75.0f) carDoorAngle = 75.0f;
+            myShowroom.carLana.setDoorAngle(carDoorAngle); 
+        }
+        if (wParam == 'C') {
+            carDoorAngle -= 5.0f;
+            if (carDoorAngle < 0.0f) carDoorAngle = 0.0f;
+            myShowroom.carLana.setDoorAngle(carDoorAngle);
         }
 
         if (wParam == 'Q') { if (camY < (showroomHeight - 7.0f)) camY += speed; }

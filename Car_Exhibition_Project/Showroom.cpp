@@ -413,7 +413,7 @@ void Showroom::render(Cybertruck& car) {
         glPopMatrix();
     }
      glPopMatrix();
-    
+   
     if (palm != NULL) {
         glEnable(GL_TEXTURE_2D);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -455,7 +455,49 @@ void Showroom::render(Cybertruck& car) {
     drawModernFrames();
     drawProfessionalGlass();
 
-    
+    glPushMatrix();
+    glTranslatef(-width * 0.25f, 0.0f, depth * 0.25f);
+    glPushMatrix();
+    glTranslatef(-40.0f, 2.2f, 0.0f);
+    glTranslatef(0.0, 0.0f, 20.0f);
+    glRotatef(carLana.platformRotation, 0.0f, 1.0f, 0.0f);
+    glScalef(4.0f, 4.0f, 4.0f);
+    carLana.Draw();
+    glPopMatrix();
+    if (room != nullptr) {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_FALSE);
+        glTranslatef(-40.0, 0.0, 0.0);
+        glTranslatef(0.0, 0.0f, 10.0f);
+        glRotatef(-180.0f, 0.0f, 1.0f, 0.0f);
+        glScalef(0.9f, 2.0f, 1.2f);
+        room->Draw();
+        glEnable(GL_TRUE);
+        glDisable(GL_BLEND);
+        glPopMatrix();
+    }
+
+    if (palm != nullptr) {
+        glEnable(GL_TEXTURE_2D);
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        glPushMatrix();
+        glTranslatef(-30.0f, 0.0f, -15.0f);
+        glScalef(0.5f, 0.5f, 0.5f);
+        palm->Draw();
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(-50.0f, 0.0f, -15.0f);
+        glScalef(0.5f, 0.5f, 0.5f);
+        palm->Draw();
+        glPopMatrix();
+
+        glDisable(GL_TEXTURE_2D);
+    }
+    glPopMatrix();
     if (isNightMode) {
         glEnable(GL_LIGHT2); 
         GLfloat portalLightPos[] = { 0.0f, height + 10.0f, glassZPos + 10.0f, 1.0f };
@@ -1002,13 +1044,31 @@ void Showroom::drawCarDisplaySection(float x, float z) {
     }
 
     glPushMatrix();
-    glTranslatef(0.0f, 7.0f, 0.0f);
-    glScalef(12.0f, 12.0f, 12.0f);
-    glRotatef(-135.0f, 0, 1, 0);
+    glTranslatef(0.0f, 0.8f, 0.0f);
+    glRotatef(carLana.platformRotation, 0.0f, 1.0f, 0.0f);
+
+    GLUquadric* q = gluNewQuadric();
+    glDisable(GL_LIGHTING);
+    glPushMatrix();
+    glTranslatef(0.0f, 0.05f, 0.0f);
+    glRotatef(90, 1, 0, 0);
+
+    float platformSize = 22.0f;
+    glColor3f(0.82f, 0.70f, 0.44f);
+    gluDisk(q, 0, platformSize, 64, 1);
+    glColor3f(0.58f, 0.45f, 0.30f);
+    gluCylinder(q, platformSize, platformSize, 0.4, 64, 1);
+    glPopMatrix();
+    glEnable(GL_LIGHTING);
+    gluDeleteQuadric(q);
+    glPushMatrix();
+    glTranslatef(0.0f, 8.0f, 0.0f);
+    glScalef(15.0f, 15.0f, 15.0f);
+    glRotatef(-135.0f, 0, 1, 0); 
     GLfloat mat_ambient[] = { 0.25f, 0.25f, 0.25f, 1.0f };
     GLfloat mat_diffuse[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-    GLfloat mat_specular[] = { 0.9f, 0.9f, 0.9f, 1.0f }; 
-    GLfloat shininess[] = { 80.0f }; 
+    GLfloat mat_specular[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+    GLfloat shininess[] = { 80.0f };
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
@@ -1020,6 +1080,7 @@ void Showroom::drawCarDisplaySection(float x, float z) {
     glEnable(GL_TEXTURE_2D);
     showcaseCar.draw();
     glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
 
     glPopMatrix();
 

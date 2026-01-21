@@ -13,6 +13,8 @@
 #include "Model_3DS.h"
 #include "CarMain.h"
 #include "RoomMain.h"
+#include "CarLana.h"
+#include "Room.h"
 
 class Showroom {
 private:
@@ -32,6 +34,8 @@ private:
  
 public:
     CarMain myCar;
+    CarLana carLana;
+    Room* room;
     RoomMain* myRoom;
     CarModel showcaseCar;
     void drawCarDisplaySection(float x, float z);

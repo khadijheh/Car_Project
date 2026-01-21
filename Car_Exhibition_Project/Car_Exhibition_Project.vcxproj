@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="3DTexture.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="CarLana.h" />
     <ClInclude Include="CarMain.h" />
     <ClInclude Include="CarModel.h" />
     <ClInclude Include="Car_Exhibition_Project.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="OutdoorArea.h" />
     <ClInclude Include="RedPortal.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="RoomMain.h" />
     <ClInclude Include="Showroom.h" />
     <ClInclude Include="ShowroomManager.h" />
@@ -153,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="3DTexture.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="CarLana.cpp" />
     <ClCompile Include="CarMain.cpp" />
     <ClCompile Include="Car_Exhibition_Project.cpp" />
     <ClCompile Include="CornerArea.cpp" />
@@ -161,6 +164,7 @@
     <ClCompile Include="FrontArea.cpp" />
     <ClCompile Include="Model_3DS.cpp" />
     <ClCompile Include="OutdoorArea.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomMain.cpp" />
     <ClCompile Include="Showroom.cpp" />
     <ClCompile Include="Sound.cpp" />
