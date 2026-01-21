@@ -1,6 +1,7 @@
 ﻿#include "CarMain.h"
+#include <glut.h>
 
-
+extern float carAngle;
 void CarMain::drawUnitCube() {
     glBegin(GL_QUADS);
     glVertex3f(-0.5f, -0.5f, 0.5f); glVertex3f(0.5f, -0.5f, 0.5f); glVertex3f(0.5f, 0.5f, 0.5f); glVertex3f(-0.5f, 0.5f, 0.5f);
@@ -48,16 +49,30 @@ void CarMain::Draw() {
             glPopMatrix();
         }
     }
-
     GLUquadric* q = gluNewQuadric();
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(0.05f, 0.05f, 0.05f);
+
     glPushMatrix();
-    glTranslatef(0.6f, 2.0f, 2.0f);
-    glRotatef(+20, 1, 0, 0);
-    gluDisk(q, 0.35, 0.4, 20, 1);
+    glTranslatef(0.6f, 2.1f, 2.0f);
+    glRotatef(20, 1, 0, 0);
+
+    glRotatef(carAngle * 10.0f, 0, 0, 1);
+
+    glutSolidTorus(0.04, 0.35, 15, 30);
+
+    glPushMatrix();
+    glScalef(0.65f, 0.02f, 0.02f);
+    drawUnitCube();
     glPopMatrix();
 
+    glPushMatrix();
+    glRotatef(90, 0, 0, 1);
+    glScalef(0.35f, 0.02f, 0.02f);
+    glTranslatef(0.4f, 0, 0);
+    drawUnitCube();
+    glPopMatrix();
 
+    glPopMatrix();
     glColor3fv(bodyCol);
     glPushMatrix(); glTranslatef(0, 0.5f, 0); glScalef(4.0f, 0.2f, 8.5f); drawUnitCube(); glPopMatrix();
     glPushMatrix(); glTranslatef(1.5f, 1.1f, 0); glScalef(1.0f, 1.0f, 8.5f); drawUnitCube(); glPopMatrix();
