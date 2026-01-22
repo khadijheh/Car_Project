@@ -1,15 +1,19 @@
-🏎️ مشروع تصميم معرض سيارات تفاعلي ثلاثي الأبعاد (OpenGL) 🏎️
+🏎️ 3D Interactive Car Showroom Project (OpenGL) 🏎️
+I am pleased to share with you the "Demo" of my Computer Graphics project for the academic year 2025-2026 at the University of Damascus - Faculty of Information Technology Engineering.
+This project aims to build a rich, realistic experience based on the OpenGL library, where we designed an integrated car showroom that combines precise detail with advanced programming techniques.
 
-يسرني أن اشارككم "الديمو" الخاص بمشروع مادة البيانيات الحاسوبية
- للعام الدراسي 2025-2026 في جامعة دمشق - كلية هندسة المعلوماتية.
-يهدف المشروع إلى بناء تجربة واقعية غنية تعتمد على مكتبة OpenGL، حيث قمنا بتصميم معرض سيارات متكامل يجمع بين الدقة في التفاصيل والتقنيات البرمجية المتقدمة.
+✨ Key Features in this Demo:
 
-✨ أبرز مميزات المشروع في هذا الديمو:
- * تصميم بيئات متنوعة: يضم المعرض 4 صالات عرض مختلفة (رياضية، عائلية، وغيرها)، 
- * تفاصيل السيارة الرئيسية: تصميم داخلي وخارجي دقيق مع إمكانية الدخول إلى مقصورة القيادة وتجربة الجلوس في مقعد السائق.
- * تحكم تفاعلي كامل: إتاحة التجول الحر (Free Roam) باستخدام الماوس ولوحة المفاتيح، وتغيير زوايا الكاميرا.
- * واقعية بصرية: تطبيق تقنيات الإضاءة المتقدمة، الخامات (Texturing)، والشفافية على الزجاج والمرايا.
- * تحريك وتفاعل (Animation): عناصر تفاعلية مثل فتح الأبواب، تحرك السيارة، ودوران العجلات.
- * محاكاة فيزيائية: معالجة التصادم مع الحواجز والعوائق لضمان حركة واقعية ضمن المعرض.
-🛠️ التقنيات المستخدمة:
-تم بناء المشروع باستخدام البرمجة غرضية التوجه (OOP) لضمان تنظيم الكود وكفاءته.
+Diverse Environment Design: The showroom includes 4 different exhibition halls (Sports, Family, and more).
+
+Main Car Details: Highly detailed interior and exterior design, with the ability to enter the cockpit and experience sitting in the driver's seat.
+
+Full Interactive Control: Enables Free Roam using the mouse and keyboard, along with adjustable camera angles.
+
+Visual Realism: Implementation of advanced lighting techniques, texturing, and transparency for glass and mirrors.
+
+Animation & Interaction: Interactive elements such as opening doors, car movement, and wheel rotation.
+
+Physics Simulation: Collision detection with barriers and obstacles to ensure realistic movement within the showroom.
+
+🛠️ Technologies Used: The project was built using Object-Oriented Programming (OOP) principles to ensure code organization, scalability, and efficiency.
